@@ -68,3 +68,30 @@ service:
   name: http
   port: 80
   protocol: TCP
+ingress:
+  create: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+  tls:
+    - hosts:
+        - "example.com"
+      secretName: "tls-secret"
+  hosts:
+    - host: "example.com"
+      paths:
+        - path: "/"
+          pathType: Prefix
+serviceAccount:
+  create: true
+  automount: true
+  annotations:
+    example.com/annotation1: "value1"
+    example.com/annotation2: "value2"
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+  targetMemoryUtilizationPercentage: 70

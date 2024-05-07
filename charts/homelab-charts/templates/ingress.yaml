@@ -1,6 +1,7 @@
 {{- if .Values.ingress.create -}}
 {{- $fullName := include "homelab-chart.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
