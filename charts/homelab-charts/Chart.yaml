@@ -2,7 +2,7 @@ apiVersion: v2
 name: homelab-charts
 description: A reusable helmchart for homelab deployments
 type: application
-version: 0.0.1
+version: 0.0.3
 appVersion: "0.0.1"
 maintainers:
   - name: kdwils
