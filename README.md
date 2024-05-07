@@ -9,7 +9,7 @@ Welcome to my Homelab Helm Repository! This repository contains multiple Helm ch
 This chart is for deploying generic Kubernetes services that do not require much outside of deployment, service, and ingress resources. It is a slightly modified base Helm chart to include environment variables and secrets on deployment resources.
 
 - [Usage Guide](charts/homelab-charts/README.md)
-- Example values file: [full-deployment.yaml](charts/homelab-charts/tests/full-deployment.yaml)
+- Example values file: [full-deployment.yaml](charts/homelab-charts/ci/full-deployment-values.yaml)
 
 ## Contributing
 
