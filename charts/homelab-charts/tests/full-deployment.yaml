@@ -64,10 +64,29 @@ deployment:
       operator: "Exists"
       effect: "NoExecute"
       tolerationSeconds: 300
+  
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+  targetMemoryUtilizationPercentage: 70
+
 service:
-  name: http
+  create: true
+  type: ClusterIP
   port: 80
+  targetPort: 8080
   protocol: TCP
+  name: http
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations:
+    example.com/annotation1: "value1"
+    example.com/annotation2: "value2"
+
 ingress:
   create: true
   className: "nginx"
@@ -83,15 +102,4 @@ ingress:
       paths:
         - path: "/"
           pathType: Prefix
-serviceAccount:
-  create: true
-  automount: true
-  annotations:
-    example.com/annotation1: "value1"
-    example.com/annotation2: "value2"
-autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 50
-  targetMemoryUtilizationPercentage: 70
+
