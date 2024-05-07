@@ -1,76 +1,44 @@
+ingress:
+  create: true
+  className: nginx
+  annotations:
+    hello: there
+  hosts:
+    - host: go-hello.test.com
+      paths:
+        - path: /
+          pathType: Prefix
+
 deployment:
   create: true
-  replicaCount: 2
+  replicaCount: 3
   image:
-    repository: nginx
-    tag: "1.19.10"
-    pullPolicy: IfNotPresent
-  imagePullSecrets: []
-  secrets:
-    - name: my-secret-1
-    - name: my-secret-2
-  env:
-    ENV_VAR_1: value1
-    ENV_VAR_2: value2
+    repository: ghcr.io/kdwils/go-hello
+    tag: main
+    pullPolicy: Always
   podAnnotations:
     prometheus.io/scrape: "true"
-    prometheus.io/path: "/metrics"
   podLabels:
-    app: nginx
-    release: stable
-  podSecurityContext:
-    runAsUser: 1000
-  serviceAccountName: default
-  securityContext:
-    runAsUser: 1000
+    app: myapp
   livenessProbe:
     httpGet:
-      path: /
-      port: 80
-    initialDelaySeconds: 15
-    periodSeconds: 30
+      path: /health
+      port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 10
   readinessProbe:
     httpGet:
-      path: /
-      port: 80
-    initialDelaySeconds: 20
-    periodSeconds: 30
+      path: /ready
+      port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 10
   resources:
-    requests:
-      memory: "64Mi"
-      cpu: "250m"
     limits:
-      memory: "128Mi"
+      memory: "256Mi"
       cpu: "500m"
-  volumeMounts:
-    - name: data
-      mountPath: /data
-  volumes:
-    - name: data
-      emptyDir: {}
-  nodeSelector:
-    kubernetes.io/os: linux
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: kubernetes.io/os
-                operator: In
-                values:
-                  - linux
-  tolerations:
-    - key: "node.kubernetes.io/not-ready"
-      operator: "Exists"
-      effect: "NoExecute"
-      tolerationSeconds: 300
-
-autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 50
-  targetMemoryUtilizationPercentage: 70
+  env:
+    ENV_VAR1: "value1"
+    ENV_VAR2: "value2"
 
 service:
   create: true
@@ -80,25 +48,9 @@ service:
   protocol: TCP
   name: http
 
-serviceAccount:
-  create: true
-  automount: true
-  annotations:
-    example.com/annotation1: "value1"
-    example.com/annotation2: "value2"
-
-ingress:
-  create: true
-  className: "nginx"
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
-  tls:
-    - hosts:
-        - "example.com"
-      secretName: "tls-secret"
-  hosts:
-    - host: "example.com"
-      paths:
-        - path: "/"
-          pathType: Prefix
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+  targetMemoryUtilizationPercentage: 80
