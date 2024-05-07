@@ -33,8 +33,10 @@ spec:
         {{- toYaml .Values.deployment.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          {{- if .Values.securityContext }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
           image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           ports:
@@ -51,12 +53,14 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.deployment.secrets }}
           envFrom:
-            {{- range . }}
+          {{- range .Values.deployment.secrets }}
             - secretRef:
                 name: {{ .name }}
-            {{- end }}
+          {{- end }}
+          {{- if .Values.sealedsecrets }}
+            - secretRef:
+                name: {{ include "homelab-chart.fullname" . }}
           {{- end }}
           {{- with .Values.deployment.env }}
           env:

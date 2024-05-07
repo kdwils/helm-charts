@@ -1,8 +1,8 @@
 apiVersion: v2
 name: homelab-charts
-description: A reusable helmchart for homelab deployments
+description: Helm chart for generic kubernetes deployments
 type: application
-version: 0.0.3
+version: 0.0.4
 appVersion: "0.0.1"
 maintainers:
   - name: kdwils
