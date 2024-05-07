@@ -1,9 +1,10 @@
 {{- if .Values.ingress.create -}}
+{{- $fullName := include "homelab-chart.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "homelab-chart.fullname" . }}
+  name: {{ $fullName }}
   labels:
     {{- include "homelab-chart.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -32,7 +33,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "homelab-chart.fullname" . }}
+                name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
           {{- end }}
