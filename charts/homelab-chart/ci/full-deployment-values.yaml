@@ -1,0 +1,56 @@
+ingress:
+  create: true
+  className: nginx
+  annotations:
+    hello: there
+  hosts:
+    - host: go-hello.test.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+deployment:
+  create: true
+  replicaCount: 3
+  image:
+    repository: ghcr.io/kdwils/go-hello
+    tag: main
+    pullPolicy: Always
+  podAnnotations:
+    prometheus.io/scrape: "true"
+  podLabels:
+    app: myapp
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  resources:
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+  env:
+    ENV_VAR1: "value1"
+    ENV_VAR2: "value2"
+
+service:
+  create: true
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+  protocol: TCP
+  name: http
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+  targetMemoryUtilizationPercentage: 80
