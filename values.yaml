@@ -40,7 +40,11 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
+deployment:
+  create: true
+
 service:
+  create: true
   type: ClusterIP
   port: 80
 
