@@ -1,6 +1,6 @@
-# Homelab Helm Repository
+#  Helm Repository
 
-Welcome to my Homelab Helm Repository! This repository contains multiple Helm charts for deploying various applications and services on Kubernetes. Each chart is designed to provide a streamlined deployment process with configurable options to suit different use cases.
+Welcome to my Helm Repository! This repository contains multiple Helm charts for deploying various applications and services on Kubernetes. Each chart is designed to provide a streamlined deployment process with configurable options to suit different use cases.
 
 ## Available Charts
 
@@ -13,6 +13,4 @@ This chart is for deploying generic Kubernetes services that do not require much
 
 ## Contributing
 
-If you would like to contribute to this Helm chart repository, please fork the repository, make your changes, and submit a pull request. We welcome contributions in the form of bug fixes, new features, or improvements to existing charts.
-
-Before submitting a pull request, please make sure to test your changes locally and ensure that they follow the guidelines outlined in the CONTRIBUTING.md file.
+If you would like to contribute to this Helm chart repository, please fork the repository, make your changes, and submit a pull request. I welcome contributions in the form of bug fixes, new features, or improvements to existing charts.
