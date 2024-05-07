@@ -1,6 +1,6 @@
 apiVersion: v2
-name: homelab-chart
+name: homelab-charts
 description: A reusable helmchart for homelab deployments
 type: application
-version: 0.1.1
-appVersion: "1.16.0"
+version: 0.0.1
+appVersion: "0.0.1"
