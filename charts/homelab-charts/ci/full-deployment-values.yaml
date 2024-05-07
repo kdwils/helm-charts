@@ -64,7 +64,7 @@ deployment:
       operator: "Exists"
       effect: "NoExecute"
       tolerationSeconds: 300
-  
+
 autoscaling:
   enabled: true
   minReplicas: 2
@@ -102,4 +102,3 @@ ingress:
       paths:
         - path: "/"
           pathType: Prefix
-
