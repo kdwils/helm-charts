@@ -1,0 +1,6 @@
+apiVersion: v2
+name: homelab-chart
+description: A reusable helmchart for homelab deployments
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
