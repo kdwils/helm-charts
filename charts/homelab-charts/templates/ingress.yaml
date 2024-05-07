@@ -1,5 +1,4 @@
 {{- if .Values.ingress.create -}}
-{{- $fullName := include "homelab-chart.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -33,7 +32,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ $fullName }}
+                name: {{ include "homelab-chart.fullname" . }}
                 port:
                   number: {{ $svcPort }}
           {{- end }}
