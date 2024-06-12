@@ -60,3 +60,27 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "mergeMaps" -}}
+  {{- $source := index . 0 -}}
+  {{- $override := index . 1 -}}
+  {{- $result := dict -}}  {{/* Create a new dictionary to avoid altering the source directly */}}
+  {{- range $key, $value := $source -}}
+    {{- if hasKey $override $key -}}
+      {{- if and (kindIs "map" $value) (kindIs "map" (index $override $key)) -}}
+        {{- $mergedSubMap := include "mergeMaps" (list $value (index $override $key)) | fromYaml -}}
+        {{- $_ := set $result $key $mergedSubMap -}}
+      {{- else -}}
+        {{- $_ := set $result $key (index $override $key) -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $_ := set $result $key $value -}}
+    {{- end -}}
+  {{- end -}}
+  {{- range $key, $value := $override -}}
+    {{- if not (hasKey $source $key) -}}
+      {{- $_ := set $result $key $value -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $result | toYaml -}}
+{{- end -}}
