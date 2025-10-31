@@ -1,0 +1,25 @@
+{{- if .Values.securityPolicy -}}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ include "homelab-chart.fullname" . }}
+  labels:
+  {{- include "homelab-chart.labels" . | nindent 4 }}
+  {{- with .Values.httproute.annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.httproute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: {{ include "homelab-chart.fullname" . }}
+  {{- if .Values.securityPolicy.extAuth }}
+  extAuth:
+    {{- toYaml .Values.securityPolicy.extAuth | nindent 4 }}
+  {{- end }}
+{{- end }}
+
