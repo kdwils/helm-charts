@@ -99,8 +99,6 @@ ingress:
 
 httproute:
   create: false
-  parentRefs: {}
-  rules: {}
 
 autoscaling:
   enabled: false
