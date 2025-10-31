@@ -1,5 +1,0 @@
-{{- $globalValues := .Values.deployment | default dict -}}
-{{- $blueValues := .Values.blueGreen.blue.deployment | default dict -}}
-{{- $greenValues := .Values.blueGreen.green.deployment | default dict -}}
-{{- $mergedBlueValues := include "mergeMaps" (list $globalValues $blueValues) | fromYaml -}}
-{{- $mergedGreenValues := include "mergeMaps" (list $globalValues $greenValues) | fromYaml -}}

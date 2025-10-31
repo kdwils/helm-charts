@@ -2,7 +2,7 @@ apiVersion: v2
 name: homelab-chart
 description: Helm chart for generic kubernetes deployments
 type: application
-version: 0.0.2
+version: 0.0.3
 appVersion: "1.16.0"
 maintainers:
   - name: kdwils
