@@ -23,10 +23,9 @@ spec:
     - {{ . | quote }}
     {{- end }}
   {{- end }}
-  {{- if .Values.httproute.rules }}
   rules:
     {{- if .Values.httproute.rules -}}
-    {{- toYaml .Values.httproute.rules | nindent 4 }}
+      {{- toYaml .Values.httproute.rules | nindent 4 }}
     {{- else }}
     - backendRefs:
       - group: ""
@@ -34,5 +33,4 @@ spec:
         name: {{ include "homelab-chart.fullname" . }}
         port: {{ .Values.service.port }}
     {{- end }}
-  {{- end }}
 {{- end }}
