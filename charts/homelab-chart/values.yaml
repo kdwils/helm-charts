@@ -105,3 +105,33 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
+
+pvc:
+  # Specifies whether PVCs should be created
+  create: false
+  # List of PVCs to create
+  pvcs: []
+  # - name: data
+  #   size: 10Gi
+  #   storageClassName: ""
+  #   accessMode: ReadWriteOnce
+  # - name: config
+  #   size: 1Gi
+  #   storageClassName: "fast-storage"
+  #   accessMode: ReadWriteOnce
+  #
+  # To mount these PVCs to your deployment, add them to deployment.volumes and deployment.volumeMounts:
+  # deployment:
+  #   volumes:
+  #     - name: data-volume
+  #       persistentVolumeClaim:
+  #         claimName: RELEASE-NAME-homelab-chart-data
+  #     - name: config-volume
+  #       persistentVolumeClaim:
+  #         claimName: RELEASE-NAME-homelab-chart-config
+  #   volumeMounts:
+  #     - name: data-volume
+  #       mountPath: /app/data
+  #     - name: config-volume
+  #       mountPath: /app/config
+  #       readOnly: true

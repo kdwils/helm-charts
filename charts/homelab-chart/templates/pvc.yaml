@@ -1,0 +1,20 @@
+{{- if .Values.pvc.create -}}
+{{- range .Values.pvc.pvcs }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "homelab-chart.fullname" $ }}-{{ .name }}
+  labels:
+    {{- include "homelab-chart.labels" $ | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .accessMode | default "ReadWriteOnce" }}
+  {{- if .storageClassName }}
+  storageClassName: {{ .storageClassName | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .size | default "10Gi" }}
+{{- end }}
+{{- end }}
