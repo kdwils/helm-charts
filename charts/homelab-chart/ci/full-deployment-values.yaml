@@ -1,6 +1,6 @@
 deployment:
   create: true
-  replicaCount: 3
+  replicas: 2
   image:
     repository: ghcr.io/kdwils/go-hello
     tag: main
@@ -28,6 +28,12 @@ deployment:
   env:
     ENV_VAR1: "value1"
     ENV_VAR2: "value2"
+  envFrom:
+    - configMapRef:
+        name: app-config
+    - secretRef:
+        name: app-secrets
+        optional: true
 
 service:
   create: true
@@ -43,3 +49,16 @@ autoscaling:
   maxReplicas: 10
   targetCPUUtilizationPercentage: 50
   targetMemoryUtilizationPercentage: 80
+
+pvc:
+  create: true
+  pvcs:
+    - name: data
+      size: 100Mi
+      accessMode: ReadWriteOnce
+      mountPath: /app/data
+    - name: config
+      size: 50Mi
+      accessMode: ReadWriteOnce
+      mountPath: /app/config
+      readOnly: true

@@ -15,7 +15,7 @@ serviceAccount:
 
 deployment:
   create: true
-  replicaCount: 1
+  replicas: 1
   image:
     repository: ""
     pullPolicy: IfNotPresent
@@ -65,6 +65,22 @@ deployment:
   podAnnotations: {}
   podLabels: {}
 
+  # Environment variables as key-value pairs
+  env: {}
+  # - ENV_VAR1: "value1"
+  # - ENV_VAR2: "value2"
+
+  # Environment variable references from ConfigMaps/Secrets
+  envFrom: []
+  # - configMapRef:
+  #     name: my-config
+  # - secretRef:
+  #     name: my-secret
+  #     optional: true
+  # - prefix: DB_
+  #   configMapRef:
+  #     name: database-config
+
   podSecurityContext: {}
     # fsGroup: 2000
 
@@ -109,29 +125,22 @@ autoscaling:
 pvc:
   # Specifies whether PVCs should be created
   create: false
-  # List of PVCs to create
+  # List of PVCs to create and/or mount
   pvcs: []
-  # - name: data
-  #   size: 10Gi
-  #   storageClassName: ""
-  #   accessMode: ReadWriteOnce
-  # - name: config
+  # - name: my-app-data  # The exact name of the PVC resource in Kubernetes
+  #   size: 10Gi  # Required when creating PVCs
+  #   storageClassName: ""  # Optional, uses cluster default if not specified
+  #   accessMode: ReadWriteOnce  # Default: ReadWriteOnce
+  #   mountPath: /app/data  # Optional: Auto-mount this PVC at the specified path
+  #   readOnly: false  # Optional: Mount as read-only (defaults to false)
+  # - name: my-app-config
   #   size: 1Gi
   #   storageClassName: "fast-storage"
   #   accessMode: ReadWriteOnce
+  #   mountPath: /app/config
+  #   readOnly: true
   #
-  # To mount these PVCs to your deployment, add them to deployment.volumes and deployment.volumeMounts:
-  # deployment:
-  #   volumes:
-  #     - name: data-volume
-  #       persistentVolumeClaim:
-  #         claimName: RELEASE-NAME-homelab-chart-data
-  #     - name: config-volume
-  #       persistentVolumeClaim:
-  #         claimName: RELEASE-NAME-homelab-chart-config
-  #   volumeMounts:
-  #     - name: data-volume
-  #       mountPath: /app/data
-  #     - name: config-volume
-  #       mountPath: /app/config
-  #       readOnly: true
+  # Note: The 'name' field is the exact PVC name (no auto-generated prefixes).
+  # If mountPath is specified, the PVC will be automatically mounted to your deployment.
+  # You can still manually configure volumes/volumeMounts using deployment.volumes and
+  # deployment.volumeMounts for more advanced use cases or non-PVC volumes.
