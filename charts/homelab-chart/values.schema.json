@@ -3,145 +3,279 @@
     "type": "object",
     "properties": {
         "autoscaling": {
+            "description": "Horizontal Pod Autoscaler configuration",
             "type": "object",
             "properties": {
                 "enabled": {
+                    "description": "Enable horizontal pod autoscaling",
+                    "default": false,
                     "type": "boolean"
                 },
                 "maxReplicas": {
-                    "type": "integer"
+                    "description": "Maximum number of replicas",
+                    "default": 100,
+                    "type": "integer",
+                    "minimum": 1
                 },
                 "minReplicas": {
-                    "type": "integer"
+                    "description": "Minimum number of replicas",
+                    "default": 1,
+                    "type": "integer",
+                    "minimum": 1
                 },
                 "targetCPUUtilizationPercentage": {
-                    "type": "integer"
+                    "description": "Target CPU utilization percentage",
+                    "default": 80,
+                    "type": "integer",
+                    "maximum": 100,
+                    "minimum": 1
                 }
             }
         },
         "deployment": {
+            "description": "Deployment configuration for the application",
             "type": "object",
             "properties": {
                 "affinity": {
-                    "type": "object"
+                    "description": "Affinity rules for pod assignment",
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "create": {
+                    "description": "Specifies whether a Deployment should be created",
+                    "default": true,
                     "type": "boolean"
                 },
                 "env": {
-                    "type": "object"
+                    "description": "Environment variables as key-value pairs",
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "envFrom": {
+                    "description": "Environment variable references from ConfigMaps/Secrets",
                     "type": "array"
                 },
                 "fullnameOverride": {
+                    "description": "Override the full resource name",
                     "type": "string"
                 },
                 "image": {
+                    "description": "Container image configuration",
                     "type": "object",
+                    "required": [
+                        "repository",
+                        "tag"
+                    ],
                     "properties": {
                         "pullPolicy": {
-                            "type": "string"
+                            "description": "Image pull policy",
+                            "default": "IfNotPresent",
+                            "type": "string",
+                            "enum": [
+                                "Always",
+                                "IfNotPresent",
+                                "Never"
+                            ]
                         },
                         "repository": {
+                            "description": "Container image repository",
                             "type": "string"
                         },
                         "tag": {
+                            "description": "Image tag (immutable tags are recommended)",
                             "type": "string"
                         }
                     }
                 },
                 "imagePullSecrets": {
-                    "type": "array"
-                },
-                "livenessProbe": {
-                    "type": "object",
-                    "properties": {
-                        "httpGet": {
-                            "type": "object",
-                            "properties": {
-                                "path": {
-                                    "type": "string"
-                                },
-                                "port": {
-                                    "type": "string"
-                                }
+                    "description": "List of image pull secrets for private registries",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
                             }
                         }
                     }
                 },
+                "livenessProbe": {
+                    "description": "Liveness probe configuration to check if the container is alive",
+                    "type": "object",
+                    "additionalProperties": true
+                },
                 "nameOverride": {
+                    "description": "Override the chart name",
                     "type": "string"
                 },
                 "nodeSelector": {
-                    "type": "object"
+                    "description": "Node labels for pod assignment",
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "podAnnotations": {
-                    "type": "object"
+                    "description": "Annotations to add to the pod",
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "podLabels": {
-                    "type": "object"
+                    "description": "Labels to add to the pod",
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "podSecurityContext": {
-                    "type": "object"
+                    "description": "Security context for the pod (fsGroup, etc.)",
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "readinessProbe": {
+                    "description": "Readiness probe configuration to check if the container is ready to serve traffic",
                     "type": "object",
-                    "properties": {
-                        "httpGet": {
-                            "type": "object",
-                            "properties": {
-                                "path": {
-                                    "type": "string"
-                                },
-                                "port": {
-                                    "type": "string"
-                                }
+                    "additionalProperties": true
+                },
+                "replicas": {
+                    "description": "Number of pod replicas to deploy",
+                    "default": 1,
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "resources": {
+                    "description": "Resource limits and requests for the container. We usually recommend not to specify default resources and to leave this as a conscious choice for the user",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "securityContext": {
+                    "description": "Security context for the container (capabilities, readOnlyRootFilesystem, runAsNonRoot, runAsUser, etc.)",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "tolerations": {
+                    "description": "Tolerations for pod assignment",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "effect": {
+                                "type": "string",
+                                "enum": [
+                                    "NoSchedule",
+                                    "PreferNoSchedule",
+                                    "NoExecute"
+                                ]
+                            },
+                            "key": {
+                                "type": "string"
+                            },
+                            "operator": {
+                                "type": "string",
+                                "enum": [
+                                    "Equal",
+                                    "Exists"
+                                ]
+                            },
+                            "tolerationSeconds": {
+                                "type": "integer"
+                            },
+                            "value": {
+                                "type": "string"
                             }
                         }
                     }
                 },
-                "replicas": {
-                    "type": "integer"
-                },
-                "resources": {
-                    "type": "object"
-                },
-                "securityContext": {
-                    "type": "object"
-                },
-                "tolerations": {
-                    "type": "array"
-                },
                 "volumeMounts": {
-                    "type": "array"
+                    "description": "Additional volumeMounts on the output Deployment definition",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "mountPath": {
+                                "description": "Path within the container",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "Volume name to mount",
+                                "type": "string"
+                            },
+                            "readOnly": {
+                                "description": "Mount as read-only",
+                                "type": "boolean"
+                            },
+                            "subPath": {
+                                "description": "Sub-path within the volume",
+                                "type": "string"
+                            }
+                        }
+                    }
                 },
                 "volumes": {
+                    "description": "Additional volumes on the output Deployment definition",
                     "type": "array"
                 }
             }
         },
         "httproute": {
+            "description": "HTTPRoute configuration for Gateway API",
             "type": "object",
             "properties": {
                 "create": {
+                    "description": "Specifies whether an HTTPRoute should be created",
+                    "default": false,
                     "type": "boolean"
+                },
+                "hostnames": {
+                    "description": "List of hostnames for the HTTPRoute",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "parentRefs": {
+                    "description": "Parent references (Gateways) for the HTTPRoute",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Name of the Gateway",
+                                "type": "string"
+                            },
+                            "namespace": {
+                                "description": "Namespace of the Gateway",
+                                "type": "string"
+                            },
+                            "sectionName": {
+                                "description": "Section name of the Gateway listener",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "rules": {
+                    "description": "Routing rules for the HTTPRoute",
+                    "type": "array"
                 }
             }
         },
         "ingress": {
+            "description": "Ingress configuration to expose the application externally",
             "type": "object",
             "properties": {
                 "annotations": {
-                    "type": "object"
+                    "description": "Annotations to add to the Ingress resource",
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "className": {
+                    "description": "IngressClass name to use for the Ingress",
                     "type": "string"
                 },
                 "create": {
+                    "description": "Specifies whether an Ingress should be created",
+                    "default": false,
                     "type": "boolean"
                 },
                 "hosts": {
+                    "description": "List of host rules for the Ingress",
                     "type": "array",
                     "items": {
                         "type": "object",
@@ -167,48 +301,132 @@
                     }
                 },
                 "tls": {
-                    "type": "array"
+                    "description": "TLS configuration for the Ingress",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "hosts": {
+                                "description": "List of hosts covered by the TLS certificate",
+                                "type": "array"
+                            },
+                            "secretName": {
+                                "description": "Name of the TLS secret",
+                                "type": "string"
+                            }
+                        }
+                    }
                 }
             }
         },
         "pvc": {
+            "description": "PersistentVolumeClaim configuration",
             "type": "object",
             "properties": {
                 "create": {
+                    "description": "Specifies whether PVCs should be created",
+                    "default": false,
                     "type": "boolean"
                 },
                 "pvcs": {
-                    "type": "array"
+                    "description": "List of PVCs to create and/or mount",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "accessMode": {
+                                "description": "Access mode for the PVC",
+                                "default": "ReadWriteOnce",
+                                "type": "string",
+                                "enum": [
+                                    "ReadWriteOnce",
+                                    "ReadOnlyMany",
+                                    "ReadWriteMany",
+                                    "ReadWriteOncePod"
+                                ]
+                            },
+                            "mountPath": {
+                                "description": "Optional: Auto-mount this PVC at the specified path in the container",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "The exact name of the PVC resource in Kubernetes",
+                                "type": "string",
+                                "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+                            },
+                            "readOnly": {
+                                "description": "Optional: Mount as read-only",
+                                "default": false,
+                                "type": "boolean"
+                            },
+                            "size": {
+                                "description": "Storage size (e.g., 10Gi, 1Ti). Required when creating PVCs",
+                                "type": "string",
+                                "pattern": "^[0-9]+(Ei|Pi|Ti|Gi|Mi|Ki|E|P|T|G|M|K)$"
+                            },
+                            "storageClassName": {
+                                "description": "StorageClass name. Optional, uses cluster default if not specified",
+                                "type": "string"
+                            },
+                            "subPath": {
+                                "description": "Optional: Sub-path within the volume to mount",
+                                "type": "string"
+                            }
+                        }
+                    }
                 }
             }
         },
         "service": {
+            "description": "Service configuration to expose the application",
             "type": "object",
             "properties": {
                 "create": {
+                    "description": "Specifies whether a Service should be created",
+                    "default": true,
                     "type": "boolean"
                 },
                 "port": {
-                    "type": "integer"
+                    "description": "Service port",
+                    "default": 80,
+                    "type": "integer",
+                    "maximum": 65535,
+                    "minimum": 1
                 },
                 "type": {
-                    "type": "string"
+                    "description": "Kubernetes Service type",
+                    "default": "ClusterIP",
+                    "type": "string",
+                    "enum": [
+                        "ClusterIP",
+                        "NodePort",
+                        "LoadBalancer",
+                        "ExternalName"
+                    ]
                 }
             }
         },
         "serviceAccount": {
+            "description": "Service account configuration for the deployment",
             "type": "object",
             "properties": {
                 "annotations": {
-                    "type": "object"
+                    "description": "Annotations to add to the service account",
+                    "type": "object",
+                    "additionalProperties": true
                 },
                 "automount": {
+                    "description": "Automatically mount a ServiceAccount's API credentials",
+                    "default": true,
                     "type": "boolean"
                 },
                 "create": {
+                    "description": "Specifies whether a service account should be created",
+                    "default": true,
                     "type": "boolean"
                 },
                 "name": {
+                    "description": "The name of the service account to use. If not set and create is true, a name is generated using the fullname template",
                     "type": "string"
                 }
             }
