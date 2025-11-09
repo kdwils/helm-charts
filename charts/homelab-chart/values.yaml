@@ -2,50 +2,65 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# @schema type:object;description:Service account configuration for the deployment
 serviceAccount:
-  # Specifies whether a service account should be created
+  # @schema type:boolean;default:true;description:Specifies whether a service account should be created
   create: true
-  # Automatically mount a ServiceAccount's API credentials?
+  # @schema type:boolean;default:true;description:Automatically mount a ServiceAccount's API credentials
   automount: true
-  # Annotations to add to the service account
+  # @schema type:object;additionalProperties:true;description:Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # @schema type:string;description:The name of the service account to use. If not set and create is true, a name is generated using the fullname template
   name: ""
 
+# @schema type:object;description:Deployment configuration for the application
 deployment:
+  # @schema type:boolean;default:true;description:Specifies whether a Deployment should be created
   create: true
-  replicaCount: 1
+  # @schema type:integer;minimum:1;default:1;description:Number of pod replicas to deploy
+  replicas: 1
+  # @schema type:object;description:Container image configuration
   image:
+    # @schema type:string;required:true;description:Container image repository
     repository: ""
+    # @schema type:string;enum:[Always,IfNotPresent,Never];default:IfNotPresent;description:Image pull policy
     pullPolicy: IfNotPresent
+    # @schema type:string;required:true;description:Image tag (immutable tags are recommended)
     tag: ""
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string"}};description:List of image pull secrets for private registries
   imagePullSecrets: []
+  # - name: myregistrykey
+  # @schema type:string;description:Override the chart name
   nameOverride: ""
+  # @schema type:string;description:Override the full resource name
   fullnameOverride: ""
-  # Additional volumes on the output Deployment definition.
+  # @schema type:array;description:Additional volumes on the output Deployment definition
   volumes: []
   # - name: foo
   #   secret:
   #     secretName: mysecret
   #     optional: false
-  # Additional volumeMounts on the output Deployment definition.
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Volume name to mount"},"mountPath":{"type":"string","description":"Path within the container"},"readOnly":{"type":"boolean","description":"Mount as read-only"},"subPath":{"type":"string","description":"Sub-path within the volume"}};description:Additional volumeMounts on the output Deployment definition
   volumeMounts: []
   # - name: foo
   #   mountPath: "/etc/foo"
   #   readOnly: true
 
+  # @schema type:object;additionalProperties:true;description:Node labels for pod assignment
   nodeSelector: {}
 
+  # @schema type:array;item:object;itemProperties:{"key":{"type":"string"},"operator":{"type":"string","enum":["Equal","Exists"]},"value":{"type":"string"},"effect":{"type":"string","enum":["NoSchedule","PreferNoSchedule","NoExecute"]},"tolerationSeconds":{"type":"integer"}};description:Tolerations for pod assignment
   tolerations: []
+  # - key: "key1"
+  #   operator: "Equal"
+  #   value: "value1"
+  #   effect: "NoSchedule"
 
+  # @schema type:object;additionalProperties:true;description:Affinity rules for pod assignment
   affinity: {}
 
+  # @schema type:object;additionalProperties:true;description:Resource limits and requests for the container. We usually recommend not to specify default resources and to leave this as a conscious choice for the user
   resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     # limits:
     #   cpu: 100m
     #   memory: 128Mi
@@ -53,21 +68,43 @@ deployment:
     #   cpu: 100m
     #   memory: 128Mi
 
-  livenessProbe:
-    httpGet:
-      path: /
-      port: http
-  readinessProbe:
-    httpGet:
-      path: /
-      port: http
+  # @schema type:object;additionalProperties:true;description:Liveness probe configuration to check if the container is alive
+  livenessProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
+  # @schema type:object;additionalProperties:true;description:Readiness probe configuration to check if the container is ready to serve traffic
+  readinessProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
 
+  # @schema type:object;additionalProperties:true;description:Annotations to add to the pod
   podAnnotations: {}
+  # @schema type:object;additionalProperties:true;description:Labels to add to the pod
   podLabels: {}
 
+  # @schema type:object;additionalProperties:true;description:Environment variables as key-value pairs
+  env: {}
+  # - ENV_VAR1: "value1"
+  # - ENV_VAR2: "value2"
+
+  # @schema type:array;description:Environment variable references from ConfigMaps/Secrets
+  envFrom: []
+  # - configMapRef:
+  #     name: my-config
+  # - secretRef:
+  #     name: my-secret
+  #     optional: true
+  # - prefix: DB_
+  #   configMapRef:
+  #     name: database-config
+
+  # @schema type:object;additionalProperties:true;description:Security context for the pod (fsGroup, etc.)
   podSecurityContext: {}
     # fsGroup: 2000
 
+  # @schema type:object;additionalProperties:true;description:Security context for the container (capabilities, readOnlyRootFilesystem, runAsNonRoot, runAsUser, etc.)
   securityContext: {}
     # capabilities:
     #   drop:
@@ -76,62 +113,89 @@ deployment:
     # runAsNonRoot: true
     # runAsUser: 1000
 
+# @schema type:object;description:Service configuration to expose the application
 service:
+  # @schema type:boolean;default:true;description:Specifies whether a Service should be created
   create: true
+  # @schema type:string;enum:[ClusterIP,NodePort,LoadBalancer,ExternalName];default:ClusterIP;description:Kubernetes Service type
   type: ClusterIP
+  # @schema type:integer;minimum:1;maximum:65535;default:80;description:Service port
   port: 80
 
+# @schema type:object;description:Ingress configuration to expose the application externally
 ingress:
+  # @schema type:boolean;default:false;description:Specifies whether an Ingress should be created
   create: false
+  # @schema type:string;description:IngressClass name to use for the Ingress
   className: ""
+  # @schema type:object;additionalProperties:true;description:Annotations to add to the Ingress resource
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+  # @schema type:array;description:List of host rules for the Ingress
   hosts:
     - host: chart-example.local
       paths:
         - path: /
           pathType: ImplementationSpecific
+  # @schema type:array;item:object;itemProperties:{"secretName":{"type":"string","description":"Name of the TLS secret"},"hosts":{"type":"array","description":"List of hosts covered by the TLS certificate"}};description:TLS configuration for the Ingress
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
+# @schema type:object;description:HTTPRoute configuration for Gateway API
 httproute:
+  # @schema type:boolean;default:false;description:Specifies whether an HTTPRoute should be created
   create: false
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the Gateway"},"namespace":{"type":"string","description":"Namespace of the Gateway"},"sectionName":{"type":"string","description":"Section name of the Gateway listener"}};description:Parent references (Gateways) for the HTTPRoute
+  parentRefs: []
+  # - name: gateway
+  #   namespace: gateway-system
+  # @schema type:array;item:string;description:List of hostnames for the HTTPRoute
+  hostnames: []
+  # - example.com
+  # @schema type:array;description:Routing rules for the HTTPRoute
+  rules: []
+  # - matches:
+  #     - path:
+  #         type: PathPrefixy
+  #         value: /
+  #   backendRefs:
+  #     - name: my-service
+  #       port: 80
 
+# @schema type:object;description:Horizontal Pod Autoscaler configuration
 autoscaling:
+  # @schema type:boolean;default:false;description:Enable horizontal pod autoscaling
   enabled: false
+  # @schema type:integer;minimum:1;default:1;description:Minimum number of replicas
   minReplicas: 1
+  # @schema type:integer;minimum:1;default:100;description:Maximum number of replicas
   maxReplicas: 100
+  # @schema type:integer;minimum:1;maximum:100;default:80;description:Target CPU utilization percentage
   targetCPUUtilizationPercentage: 80
 
+# @schema type:object;description:PersistentVolumeClaim configuration
 pvc:
-  # Specifies whether PVCs should be created
+  # @schema type:boolean;default:false;description:Specifies whether PVCs should be created
   create: false
-  # List of PVCs to create
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"The exact name of the PVC resource in Kubernetes","pattern":"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"},"size":{"type":"string","description":"Storage size (e.g., 10Gi, 1Ti). Required when creating PVCs","pattern":"^[0-9]+(Ei|Pi|Ti|Gi|Mi|Ki|E|P|T|G|M|K)$"},"storageClassName":{"type":"string","description":"StorageClass name. Optional, uses cluster default if not specified"},"accessMode":{"type":"string","enum":["ReadWriteOnce","ReadOnlyMany","ReadWriteMany","ReadWriteOncePod"],"default":"ReadWriteOnce","description":"Access mode for the PVC"},"mountPath":{"type":"string","description":"Optional: Auto-mount this PVC at the specified path in the container"},"readOnly":{"type":"boolean","default":false,"description":"Optional: Mount as read-only"},"subPath":{"type":"string","description":"Optional: Sub-path within the volume to mount"}};description:List of PVCs to create and/or mount
   pvcs: []
-  # - name: data
+  # - name: my-app-data
   #   size: 10Gi
   #   storageClassName: ""
   #   accessMode: ReadWriteOnce
-  # - name: config
+  #   mountPath: /app/data
+  #   readOnly: false
+  # - name: my-app-config
   #   size: 1Gi
   #   storageClassName: "fast-storage"
   #   accessMode: ReadWriteOnce
+  #   mountPath: /app/config
+  #   readOnly: true
   #
-  # To mount these PVCs to your deployment, add them to deployment.volumes and deployment.volumeMounts:
-  # deployment:
-  #   volumes:
-  #     - name: data-volume
-  #       persistentVolumeClaim:
-  #         claimName: RELEASE-NAME-homelab-chart-data
-  #     - name: config-volume
-  #       persistentVolumeClaim:
-  #         claimName: RELEASE-NAME-homelab-chart-config
-  #   volumeMounts:
-  #     - name: data-volume
-  #       mountPath: /app/data
-  #     - name: config-volume
-  #       mountPath: /app/config
-  #       readOnly: true
+  # Note: The 'name' field is the exact PVC name (no auto-generated prefixes).
+  # If mountPath is specified, the PVC will be automatically mounted to your deployment.
+  # You can still manually configure volumes/volumeMounts using deployment.volumes and
+  # deployment.volumeMounts for more advanced use cases or non-PVC volumes.

@@ -7,7 +7,7 @@ metadata:
     {{- include "homelab-chart.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.deployment.replicaCount }}
+  replicas: {{ .Values.deployment.replicas }}
   {{- end }}
   selector:
     matchLabels:
@@ -49,9 +49,20 @@ spec:
             {{- toYaml .Values.deployment.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.deployment.resources | nindent 12 }}
-          {{- with .Values.deployment.volumeMounts }}
+          {{- $volumeMounts := list }}
+          {{- if and .Values.pvc.create .Values.pvc.pvcs }}
+          {{- range .Values.pvc.pvcs }}
+          {{- if .mountPath }}
+          {{- $volumeMounts = append $volumeMounts (dict "name" (printf "pvc-%s" .name) "mountPath" .mountPath "readOnly" (default false .readOnly)) }}
+          {{- end }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.deployment.volumeMounts }}
+          {{- $volumeMounts = concat $volumeMounts .Values.deployment.volumeMounts }}
+          {{- end }}
+          {{- if $volumeMounts }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
+            {{- toYaml $volumeMounts | nindent 12 }}
           {{- end }}
           {{- with .Values.deployment.env }}
           env:
@@ -60,9 +71,24 @@ spec:
               value: {{ $value | quote }}
             {{- end }}
           {{- end }}
-      {{- with .Values.deployment.volumes }}
+          {{- with .Values.deployment.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- $volumes := list }}
+      {{- if and .Values.pvc.create .Values.pvc.pvcs }}
+      {{- range .Values.pvc.pvcs }}
+      {{- if .mountPath }}
+      {{- $volumes = append $volumes (dict "name" (printf "pvc-%s" .name) "persistentVolumeClaim" (dict "claimName" .name)) }}
+      {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- if .Values.deployment.volumes }}
+      {{- $volumes = concat $volumes .Values.deployment.volumes }}
+      {{- end }}
+      {{- if $volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml $volumes | nindent 8 }}
       {{- end }}
       {{- with .Values.deployment.nodeSelector }}
       nodeSelector:
