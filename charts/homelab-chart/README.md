@@ -1,6 +1,6 @@
 # homelab-chart
 
-![Version: 0.0.12](https://img.shields.io/badge/Version-0.0.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.0.13](https://img.shields.io/badge/Version-0.0.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 Helm chart for generic kubernetes deployments
 
@@ -19,7 +19,7 @@ Helm chart for generic kubernetes deployments
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | deployment.affinity | object | `{}` |  |
-| deployment.create | bool | `true` |  |
+| deployment.create | bool | `false` |  |
 | deployment.env | object | `{}` |  |
 | deployment.envFrom | list | `[]` |  |
 | deployment.fullnameOverride | string | `""` |  |
@@ -53,12 +53,12 @@ Helm chart for generic kubernetes deployments
 | ingress.tls | list | `[]` |  |
 | pvc.create | bool | `false` |  |
 | pvc.pvcs | list | `[]` |  |
-| service.create | bool | `true` |  |
+| service.create | bool | `false` |  |
 | service.port | int | `80` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.automount | bool | `true` |  |
-| serviceAccount.create | bool | `true` |  |
+| serviceAccount.automount | bool | `false` |  |
+| serviceAccount.create | bool | `false` |  |
 | serviceAccount.name | string | `""` |  |
 
 ----------------------------------------------
