@@ -1,6 +1,6 @@
 # homelab-chart
 
-![Version: 0.0.10](https://img.shields.io/badge/Version-0.0.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.0.12](https://img.shields.io/badge/Version-0.0.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 Helm chart for generic kubernetes deployments
 
@@ -27,15 +27,13 @@ Helm chart for generic kubernetes deployments
 | deployment.image.repository | string | `""` |  |
 | deployment.image.tag | string | `""` |  |
 | deployment.imagePullSecrets | list | `[]` |  |
-| deployment.livenessProbe.httpGet.path | string | `"/"` |  |
-| deployment.livenessProbe.httpGet.port | string | `"http"` |  |
+| deployment.livenessProbe | object | `{}` |  |
 | deployment.nameOverride | string | `""` |  |
 | deployment.nodeSelector | object | `{}` |  |
 | deployment.podAnnotations | object | `{}` |  |
 | deployment.podLabels | object | `{}` |  |
 | deployment.podSecurityContext | object | `{}` |  |
-| deployment.readinessProbe.httpGet.path | string | `"/"` |  |
-| deployment.readinessProbe.httpGet.port | string | `"http"` |  |
+| deployment.readinessProbe | object | `{}` |  |
 | deployment.replicas | int | `1` |  |
 | deployment.resources | object | `{}` |  |
 | deployment.securityContext | object | `{}` |  |
@@ -43,6 +41,9 @@ Helm chart for generic kubernetes deployments
 | deployment.volumeMounts | list | `[]` |  |
 | deployment.volumes | list | `[]` |  |
 | httproute.create | bool | `false` |  |
+| httproute.hostnames | list | `[]` |  |
+| httproute.parentRefs | list | `[]` |  |
+| httproute.rules | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.create | bool | `false` |  |
