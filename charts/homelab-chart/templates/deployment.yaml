@@ -43,10 +43,14 @@ spec:
             - name: {{ .Values.service.name | default "http" }}
               containerPort: {{ .Values.service.port }}
               protocol: {{ .Values.service.protocol | default "TCP" }}
+          {{- with .Values.deployment.livenessProbe -}} 
           livenessProbe:
-            {{- toYaml .Values.deployment.livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.deployment.readinessProbe }} 
           readinessProbe:
-            {{- toYaml .Values.deployment.readinessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.deployment.resources | nindent 12 }}
           {{- $volumeMounts := list }}

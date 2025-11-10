@@ -69,12 +69,12 @@ deployment:
     #   memory: 128Mi
 
   # @schema type:object;additionalProperties:true;description:Liveness probe configuration to check if the container is alive
-  livenessProbe: {}
+  # livenessProbe: {}
     # httpGet:
     #   path: /
     #   port: http
   # @schema type:object;additionalProperties:true;description:Readiness probe configuration to check if the container is ready to serve traffic
-  readinessProbe: {}
+  # readinessProbe: {}
     # httpGet:
     #   path: /
     #   port: http

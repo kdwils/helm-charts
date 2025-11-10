@@ -99,11 +99,6 @@
                         }
                     }
                 },
-                "livenessProbe": {
-                    "description": "Liveness probe configuration to check if the container is alive",
-                    "type": "object",
-                    "additionalProperties": true
-                },
                 "nameOverride": {
                     "description": "Override the chart name",
                     "type": "string"
@@ -125,11 +120,6 @@
                 },
                 "podSecurityContext": {
                     "description": "Security context for the pod (fsGroup, etc.)",
-                    "type": "object",
-                    "additionalProperties": true
-                },
-                "readinessProbe": {
-                    "description": "Readiness probe configuration to check if the container is ready to serve traffic",
                     "type": "object",
                     "additionalProperties": true
                 },
