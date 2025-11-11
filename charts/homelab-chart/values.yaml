@@ -19,6 +19,8 @@ deployment:
   create: false
   # @schema type:integer;minimum:1;default:1;description:Number of pod replicas to deploy
   replicas: 1
+  # @schema type:string;description:pod hostname
+  hostname: ""
   # @schema type:object;description:Container image configuration
   image:
     # @schema type:string;required:true;description:Container image repository

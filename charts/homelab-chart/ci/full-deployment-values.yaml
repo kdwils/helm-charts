@@ -1,6 +1,11 @@
 deployment:
   create: true
   replicas: 2
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    readOnlyRootFilesystem: true
+  hostname: test
   image:
     repository: ghcr.io/kdwils/go-hello
     tag: main
