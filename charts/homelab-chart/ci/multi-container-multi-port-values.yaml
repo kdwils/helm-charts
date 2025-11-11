@@ -1,9 +1,6 @@
-# Example values file demonstrating multi-port service and multi-container deployment
 deployment:
   create: true
   replicas: 1
-
-  # Multiple containers with individual configurations
   containers:
     - name: main-app
       image:
@@ -41,35 +38,13 @@ deployment:
         runAsUser: 1000
         readOnlyRootFilesystem: true
 
-    - name: sidecar
-      image:
-        repository: ghcr.io/kdwils/go-hello
-        tag: main
-        pullPolicy: IfNotPresent
-      resources:
-        limits:
-          cpu: 100m
-          memory: 128Mi
-        requests:
-          cpu: 50m
-          memory: 64Mi
-      ports:
-        - name: http2
-          containerPort: 8081
-          protocol: TCP
-
 service:
   create: true
   type: ClusterIP
-
   ports:
     - name: http
       port: 80
       targetPort: 8080
-      protocol: TCP
-    - name: http2
-      port: 81
-      targetPort: http2
       protocol: TCP
 
 serviceAccount:
