@@ -494,6 +494,7 @@
                 },
                 "port": {
                     "description": "Service port",
+                    "default": 0,
                     "type": [
                         "integer",
                         "string"

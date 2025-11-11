@@ -19,6 +19,7 @@ Helm chart for generic kubernetes deployments
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | deployment.affinity | object | `{}` |  |
+| deployment.containers | list | `[]` |  |
 | deployment.create | bool | `false` |  |
 | deployment.env | object | `{}` |  |
 | deployment.envFrom | list | `[]` |  |
@@ -55,7 +56,11 @@ Helm chart for generic kubernetes deployments
 | securityPolicies | list | `[]` |  |
 | securityPolicy | object | `{}` |  |
 | service.create | bool | `false` |  |
-| service.port | int | `80` |  |
+| service.name | string | `""` |  |
+| service.port | int | `0` |  |
+| service.ports | list | `[]` |  |
+| service.protocol | string | `"TCP"` |  |
+| service.targetPort | int | `0` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.automount | bool | `false` |  |

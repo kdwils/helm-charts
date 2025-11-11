@@ -7,9 +7,9 @@ deployment:
   containers:
     - name: main-app
       image:
-        repository: nginx
-        tag: "1.25"
-        pullPolicy: IfNotPresent
+        repository: ghcr.io/kdwils/go-hello
+        tag: main
+        pullPolicy: Always
       resources:
         limits:
           cpu: 200m
@@ -41,9 +41,9 @@ deployment:
         runAsUser: 1000
         readOnlyRootFilesystem: true
 
-    - name: metrics-sidecar
+    - name: sidecar
       image:
-        repository: prom/statsd-exporter
+        repository: ghcr.io/kdwils/go-hello
         tag: "v0.26.0"
         pullPolicy: IfNotPresent
       resources:
@@ -54,33 +54,23 @@ deployment:
           cpu: 50m
           memory: 64Mi
       ports:
-        - name: metrics
-          containerPort: 9090
+        - name: http2
+          containerPort: 8081
           protocol: TCP
-        - name: statsd
-          containerPort: 9125
-          protocol: UDP
-      env:
-        STATSD_MAPPING_CONFIG: "/etc/statsd/mapping.conf"
 
 service:
   create: true
   type: ClusterIP
 
-  # Multiple ports configuration
   ports:
     - name: http
       port: 80
       targetPort: 8080
       protocol: TCP
-    - name: metrics
-      port: 9090
-      targetPort: 9090
+    - name: http
+      port: 81
+      targetPort: http2
       protocol: TCP
-    - name: statsd
-      port: 9125
-      targetPort: 9125
-      protocol: UDP
 
 serviceAccount:
   create: true
