@@ -1,6 +1,6 @@
 # homelab-chart
 
-![Version: 0.0.14](https://img.shields.io/badge/Version-0.0.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 Helm chart for generic kubernetes deployments
 
@@ -19,6 +19,7 @@ Helm chart for generic kubernetes deployments
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | deployment.affinity | object | `{}` |  |
+| deployment.containers | list | `[]` |  |
 | deployment.create | bool | `false` |  |
 | deployment.env | object | `{}` |  |
 | deployment.envFrom | list | `[]` |  |
@@ -42,6 +43,7 @@ Helm chart for generic kubernetes deployments
 | httproute.hostnames | list | `[]` |  |
 | httproute.parentRefs | list | `[]` |  |
 | httproute.rules | list | `[]` |  |
+| httproutes | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.create | bool | `false` |  |
@@ -51,8 +53,14 @@ Helm chart for generic kubernetes deployments
 | ingress.tls | list | `[]` |  |
 | pvc.create | bool | `false` |  |
 | pvc.pvcs | list | `[]` |  |
+| securityPolicies | list | `[]` |  |
+| securityPolicy | object | `{}` |  |
 | service.create | bool | `false` |  |
-| service.port | int | `80` |  |
+| service.name | string | `""` |  |
+| service.port | int | `0` |  |
+| service.ports | list | `[]` |  |
+| service.protocol | string | `"TCP"` |  |
+| service.targetPort | int | `0` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.automount | bool | `false` |  |

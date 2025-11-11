@@ -1,0 +1,52 @@
+deployment:
+  create: true
+  replicas: 1
+  containers:
+    - name: main-app
+      image:
+        repository: ghcr.io/kdwils/go-hello
+        tag: main
+        pullPolicy: Always
+      resources:
+        limits:
+          cpu: 200m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: http
+        initialDelaySeconds: 30
+        periodSeconds: 10
+      readinessProbe:
+        httpGet:
+          path: /ready
+          port: http
+        initialDelaySeconds: 5
+        periodSeconds: 5
+      env:
+        APP_ENV: "production"
+        LOG_LEVEL: "info"
+      ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        readOnlyRootFilesystem: true
+
+service:
+  create: true
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+
+serviceAccount:
+  create: true
+  automount: true

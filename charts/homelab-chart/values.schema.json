@@ -41,6 +41,55 @@
                     "type": "object",
                     "additionalProperties": true
                 },
+                "containers": {
+                    "description": "List of containers (use this for multiple containers instead of single container configuration above)",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "env": {
+                                "description": "Environment variables",
+                                "type": "object"
+                            },
+                            "envFrom": {
+                                "description": "Environment variables from ConfigMaps/Secrets",
+                                "type": "array"
+                            },
+                            "image": {
+                                "description": "Container image configuration",
+                                "type": "object"
+                            },
+                            "livenessProbe": {
+                                "description": "Liveness probe configuration",
+                                "type": "object"
+                            },
+                            "name": {
+                                "description": "Container name",
+                                "type": "string"
+                            },
+                            "ports": {
+                                "description": "Container ports",
+                                "type": "array"
+                            },
+                            "readinessProbe": {
+                                "description": "Readiness probe configuration",
+                                "type": "object"
+                            },
+                            "resources": {
+                                "description": "Resource limits and requests",
+                                "type": "object"
+                            },
+                            "securityContext": {
+                                "description": "Security context for this container",
+                                "type": "object"
+                            },
+                            "volumeMounts": {
+                                "description": "Volume mounts for this container",
+                                "type": "array"
+                            }
+                        }
+                    }
+                },
                 "create": {
                     "description": "Specifies whether a Deployment should be created",
                     "default": true,
@@ -246,6 +295,35 @@
                 }
             }
         },
+        "httproutes": {
+            "description": "List of HTTPRoute resources to create",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "annotations": {
+                        "description": "Annotations for the HTTPRoute",
+                        "type": "object"
+                    },
+                    "hostnames": {
+                        "description": "List of hostnames",
+                        "type": "array"
+                    },
+                    "name": {
+                        "description": "Name of the HTTPRoute resource (required)",
+                        "type": "string"
+                    },
+                    "parentRefs": {
+                        "description": "Parent references (Gateways)",
+                        "type": "array"
+                    },
+                    "rules": {
+                        "description": "Routing rules",
+                        "type": "array"
+                    }
+                }
+            }
+        },
         "ingress": {
             "description": "Ingress configuration to expose the application externally",
             "type": "object",
@@ -367,6 +445,39 @@
                 }
             }
         },
+        "securityPolicies": {
+            "description": "List of SecurityPolicy resources to create",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "annotations": {
+                        "description": "Annotations for the SecurityPolicy",
+                        "type": "object"
+                    },
+                    "extAuth": {
+                        "description": "External authentication configuration",
+                        "type": "object"
+                    },
+                    "name": {
+                        "description": "Name of the SecurityPolicy resource (required)",
+                        "type": "string"
+                    },
+                    "targetNamespace": {
+                        "description": "Namespace of the target HTTPRoute (optional)",
+                        "type": "string"
+                    },
+                    "targetRoute": {
+                        "description": "Name of the HTTPRoute to apply this policy to (required)",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securityPolicy": {
+            "description": "Envoy Gateway SecurityPolicy for the HTTPRoute",
+            "type": "object"
+        },
         "service": {
             "description": "Service configuration to expose the application",
             "type": "object",
@@ -376,12 +487,73 @@
                     "default": true,
                     "type": "boolean"
                 },
+                "name": {
+                    "description": "Name for the port",
+                    "default": "http",
+                    "type": "string"
+                },
                 "port": {
                     "description": "Service port",
-                    "default": 80,
-                    "type": "integer",
-                    "maximum": 65535,
-                    "minimum": 1
+                    "default": 0,
+                    "type": [
+                        "integer",
+                        "string"
+                    ]
+                },
+                "ports": {
+                    "description": "List of ports",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Port name",
+                                "type": "string"
+                            },
+                            "port": {
+                                "description": "Service port",
+                                "type": [
+                                    "integer",
+                                    "string"
+                                ]
+                            },
+                            "protocol": {
+                                "description": "Protocol",
+                                "default": "TCP",
+                                "type": "string",
+                                "enum": [
+                                    "TCP",
+                                    "UDP",
+                                    "SCTP"
+                                ]
+                            },
+                            "targetPort": {
+                                "description": "Target port on the container",
+                                "type": [
+                                    "integer",
+                                    "string"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "protocol": {
+                    "description": "Protocol for the port",
+                    "default": "TCP",
+                    "type": "string",
+                    "enum": [
+                        "TCP",
+                        "UDP",
+                        "SCTP"
+                    ]
+                },
+                "targetPort": {
+                    "description": "Target port on the container",
+                    "type": [
+                        "integer",
+                        "string",
+                        "null"
+                    ]
                 },
                 "type": {
                     "description": "Kubernetes Service type",

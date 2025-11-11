@@ -70,14 +70,14 @@ deployment:
 
   # @schema type:object;additionalProperties:true;description:Liveness probe configuration to check if the container is alive
   # livenessProbe: {}
-    # httpGet:
-    #   path: /
-    #   port: http
+  # httpGet:
+  #   path: /
+  #   port: http
   # @schema type:object;additionalProperties:true;description:Readiness probe configuration to check if the container is ready to serve traffic
   # readinessProbe: {}
-    # httpGet:
-    #   path: /
-    #   port: http
+  # httpGet:
+  #   path: /
+  #   port: http
 
   # @schema type:object;additionalProperties:true;description:Annotations to add to the pod
   podAnnotations: {}
@@ -113,14 +113,80 @@ deployment:
     # runAsNonRoot: true
     # runAsUser: 1000
 
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Container name"},"image":{"type":"object","description":"Container image configuration"},"resources":{"type":"object","description":"Resource limits and requests"},"livenessProbe":{"type":"object","description":"Liveness probe configuration"},"readinessProbe":{"type":"object","description":"Readiness probe configuration"},"env":{"type":"object","description":"Environment variables"},"envFrom":{"type":"array","description":"Environment variables from ConfigMaps/Secrets"},"volumeMounts":{"type":"array","description":"Volume mounts for this container"},"securityContext":{"type":"object","description":"Security context for this container"},"ports":{"type":"array","description":"Container ports"}};description:List of containers (use this for multiple containers instead of single container configuration above)
+  containers: []
+  # containers:
+  #   - name: main-app
+  #     image:
+  #       repository: nginx
+  #       tag: latest
+  #       pullPolicy: IfNotPresent
+  #     resources:
+  #       limits:
+  #         cpu: 100m
+  #         memory: 128Mi
+  #       requests:
+  #         cpu: 100m
+  #         memory: 128Mi
+  #     livenessProbe:
+  #       httpGet:
+  #         path: /healthz
+  #         port: http
+  #     readinessProbe:
+  #       httpGet:
+  #         path: /ready
+  #         port: http
+  #     env:
+  #       ENV_VAR: "value"
+  #     envFrom:
+  #       - configMapRef:
+  #           name: my-config
+  #     volumeMounts:
+  #       - name: data
+  #         mountPath: /data
+  #     securityContext:
+  #       runAsNonRoot: true
+  #       runAsUser: 1000
+  #     ports:
+  #       - name: http
+  #         containerPort: 8080
+  #         protocol: TCP
+  #   - name: sidecar
+  #     image:
+  #       repository: sidecar-image
+  #       tag: v1.0
+  #       pullPolicy: IfNotPresent
+  #     ports:
+  #       - name: metrics
+  #         containerPort: 9090
+  #         protocol: TCP
+
 # @schema type:object;description:Service configuration to expose the application
 service:
   # @schema type:boolean;default:true;description:Specifies whether a Service should be created
   create: false
   # @schema type:string;enum:[ClusterIP,NodePort,LoadBalancer,ExternalName];default:ClusterIP;description:Kubernetes Service type
   type: ClusterIP
-  # @schema type:integer;minimum:1;maximum:65535;default:80;description:Service port
-  port: 80
+  # @schema type:[integer,string];default:0;description:Service port
+  port: 0
+  # @schema type:[integer,string,null];description:Target port on the container
+  targetPort: 0
+  # @schema type:string;enum:[TCP,UDP,SCTP];default:TCP;description:Protocol for the port
+  protocol: TCP
+  # @schema type:string;default:http;description:Name for the port
+  name: ""
+
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Port name"},"port":{"type":["integer","string"],"description":"Service port"},"targetPort":{"type":["integer","string"],"description":"Target port on the container"},"protocol":{"type":"string","enum":["TCP","UDP","SCTP"],"default":"TCP","description":"Protocol"}};description:List of ports
+  ports: []
+  # Example:
+  #   - name: http
+  #     port: 80
+  #     targetPort: 8080
+  #     protocol: TCP
+  #   - name: metrics
+  #     port: 9090
+  #     targetPort: 9090
+  #     protocol: TCP
 
 # @schema type:object;description:Ingress configuration to expose the application externally
 ingress:
@@ -164,6 +230,61 @@ httproute:
   #   backendRefs:
   #     - name: my-service
   #       port: 80
+
+# @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the HTTPRoute resource (required)"},"annotations":{"type":"object","description":"Annotations for the HTTPRoute"},"parentRefs":{"type":"array","description":"Parent references (Gateways)"},"hostnames":{"type":"array","description":"List of hostnames"},"rules":{"type":"array","description":"Routing rules"}};description:List of HTTPRoute resources to create
+httproutes: []
+# - name: api-route
+#   parentRefs:
+#     - name: gateway
+#       namespace: gateway-system
+#   hostnames:
+#     - api.example.com
+#   rules:
+#     - matches:
+#         - path:
+#             type: PathPrefix
+#             value: /api
+#       backendRefs:
+#         - name: api-service
+#           port: 8080
+# - name: web-route
+#   parentRefs:
+#     - name: gateway
+#       namespace: gateway-system
+#   hostnames:
+#     - web.example.com
+#   rules:
+#     - backendRefs:
+#         - name: web-service
+#           port: 80
+
+# @schema type:object;description:Envoy Gateway SecurityPolicy for the HTTPRoute
+securityPolicy: {}
+#  extAuth:
+#    grpc:
+#      backendRef:
+#        name: ext-auth-service
+#        port: 9000
+
+# @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the SecurityPolicy resource (required)"},"targetRoute":{"type":"string","description":"Name of the HTTPRoute to apply this policy to (required)"},"targetNamespace":{"type":"string","description":"Namespace of the target HTTPRoute (optional)"},"annotations":{"type":"object","description":"Annotations for the SecurityPolicy"},"extAuth":{"type":"object","description":"External authentication configuration"}};description:List of SecurityPolicy resources to create
+securityPolicies: []
+# - name: api-auth-policy
+#   targetRoute: api-route
+#   extAuth:
+#     grpc:
+#       backendRef:
+#         name: ext-auth-service
+#         port: 9000
+# - name: web-auth-policy
+#   targetRoute: web-route
+#   extAuth:
+#     http:
+#       backendRef:
+#         name: web-auth-service
+#         port: 8080
+#       path: /auth
+#       headersToBackend:
+#         - authorization
 
 # @schema type:object;description:Horizontal Pod Autoscaler configuration
 autoscaling:
