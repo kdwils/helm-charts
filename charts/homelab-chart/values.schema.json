@@ -41,6 +41,55 @@
                     "type": "object",
                     "additionalProperties": true
                 },
+                "containers": {
+                    "description": "List of containers (use this for multiple containers instead of single container configuration above)",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "env": {
+                                "description": "Environment variables",
+                                "type": "object"
+                            },
+                            "envFrom": {
+                                "description": "Environment variables from ConfigMaps/Secrets",
+                                "type": "array"
+                            },
+                            "image": {
+                                "description": "Container image configuration",
+                                "type": "object"
+                            },
+                            "livenessProbe": {
+                                "description": "Liveness probe configuration",
+                                "type": "object"
+                            },
+                            "name": {
+                                "description": "Container name",
+                                "type": "string"
+                            },
+                            "ports": {
+                                "description": "Container ports",
+                                "type": "array"
+                            },
+                            "readinessProbe": {
+                                "description": "Readiness probe configuration",
+                                "type": "object"
+                            },
+                            "resources": {
+                                "description": "Resource limits and requests",
+                                "type": "object"
+                            },
+                            "securityContext": {
+                                "description": "Security context for this container",
+                                "type": "object"
+                            },
+                            "volumeMounts": {
+                                "description": "Volume mounts for this container",
+                                "type": "array"
+                            }
+                        }
+                    }
+                },
                 "create": {
                     "description": "Specifies whether a Deployment should be created",
                     "default": true,
@@ -135,53 +184,8 @@
                     "additionalProperties": true
                 },
                 "securityContext": {
-                    "description": "List of containers (use this for multiple containers instead of single container configuration above)",
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "env": {
-                                "description": "Environment variables",
-                                "type": "object"
-                            },
-                            "envFrom": {
-                                "description": "Environment variables from ConfigMaps/Secrets",
-                                "type": "array"
-                            },
-                            "image": {
-                                "description": "Container image configuration",
-                                "type": "object"
-                            },
-                            "livenessProbe": {
-                                "description": "Liveness probe configuration",
-                                "type": "object"
-                            },
-                            "name": {
-                                "description": "Container name",
-                                "type": "string"
-                            },
-                            "ports": {
-                                "description": "Container ports",
-                                "type": "array"
-                            },
-                            "readinessProbe": {
-                                "description": "Readiness probe configuration",
-                                "type": "object"
-                            },
-                            "resources": {
-                                "description": "Resource limits and requests",
-                                "type": "object"
-                            },
-                            "securityContext": {
-                                "description": "Security context for this container",
-                                "type": "object"
-                            },
-                            "volumeMounts": {
-                                "description": "Volume mounts for this container",
-                                "type": "array"
-                            }
-                        }
-                    },
+                    "description": "Security context for the container (capabilities, readOnlyRootFilesystem, runAsNonRoot, runAsUser, etc.)",
+                    "type": "object",
                     "additionalProperties": true
                 },
                 "tolerations": {

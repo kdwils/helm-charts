@@ -70,14 +70,14 @@ deployment:
 
   # @schema type:object;additionalProperties:true;description:Liveness probe configuration to check if the container is alive
   # livenessProbe: {}
-    # httpGet:
-    #   path: /
-    #   port: http
+  # httpGet:
+  #   path: /
+  #   port: http
   # @schema type:object;additionalProperties:true;description:Readiness probe configuration to check if the container is ready to serve traffic
   # readinessProbe: {}
-    # httpGet:
-    #   path: /
-    #   port: http
+  # httpGet:
+  #   path: /
+  #   port: http
 
   # @schema type:object;additionalProperties:true;description:Annotations to add to the pod
   podAnnotations: {}
@@ -114,6 +114,7 @@ deployment:
     # runAsUser: 1000
 
   # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Container name"},"image":{"type":"object","description":"Container image configuration"},"resources":{"type":"object","description":"Resource limits and requests"},"livenessProbe":{"type":"object","description":"Liveness probe configuration"},"readinessProbe":{"type":"object","description":"Readiness probe configuration"},"env":{"type":"object","description":"Environment variables"},"envFrom":{"type":"array","description":"Environment variables from ConfigMaps/Secrets"},"volumeMounts":{"type":"array","description":"Volume mounts for this container"},"securityContext":{"type":"object","description":"Security context for this container"},"ports":{"type":"array","description":"Container ports"}};description:List of containers (use this for multiple containers instead of single container configuration above)
+  containers: []
   # containers:
   #   - name: main-app
   #     image:
