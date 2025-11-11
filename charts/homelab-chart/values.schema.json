@@ -487,14 +487,17 @@
                     "default": true,
                     "type": "boolean"
                 },
-                "port": {
+                "name": {
                     "description": "Name for the port",
                     "default": "http",
-                    "type": "string",
-                    "enum": [
-                        "TCP",
-                        "UDP",
-                        "SCTP"
+                    "type": "string"
+                },
+                "port": {
+                    "description": "Service port",
+                    "default": 80,
+                    "type": [
+                        "integer",
+                        "string"
                     ],
                     "maximum": 65535,
                     "minimum": 1
@@ -533,6 +536,26 @@
                             }
                         }
                     }
+                },
+                "protocol": {
+                    "description": "Protocol for the port",
+                    "default": "TCP",
+                    "type": "string",
+                    "enum": [
+                        "TCP",
+                        "UDP",
+                        "SCTP"
+                    ]
+                },
+                "targetPort": {
+                    "description": "Target port on the container",
+                    "type": [
+                        "integer",
+                        "string",
+                        "null"
+                    ],
+                    "maximum": 65535,
+                    "minimum": 1
                 },
                 "type": {
                     "description": "Kubernetes Service type",

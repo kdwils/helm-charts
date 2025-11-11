@@ -167,14 +167,14 @@ service:
   create: false
   # @schema type:string;enum:[ClusterIP,NodePort,LoadBalancer,ExternalName];default:ClusterIP;description:Kubernetes Service type
   type: ClusterIP
-  # @schema type:integer;minimum:1;maximum:65535;default:80;description:Service port (used when ports array is not specified)
-  port: 80
-  # @schema type:integer;minimum:1;maximum:65535;description:Target port on the container (optional, defaults to port value)
-  # targetPort: 8080
+  # @schema type:[integer,string];minimum:1;maximum:65535;default:80;description:Service port
+  port: 0
+  # @schema type:[integer,string,null];minimum:1;maximum:65535;description:Target port on the container
+  targetPort: 0
   # @schema type:string;enum:[TCP,UDP,SCTP];default:TCP;description:Protocol for the port
-  # protocol: TCP
+  protocol: TCP
   # @schema type:string;default:http;description:Name for the port
-  # name: http
+  name: ""
 
   # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Port name"},"port":{"type":"integer","minimum":1,"maximum":65535,"description":"Service port"},"targetPort":{"type":"integer","minimum":1,"maximum":65535,"description":"Target port on the container"},"protocol":{"type":"string","enum":["TCP","UDP","SCTP"],"default":"TCP","description":"Protocol"}};description:List of ports (use this for multiple ports instead of single port field)
   ports: []
