@@ -501,7 +501,7 @@
                     ]
                 },
                 "ports": {
-                    "description": "List of ports (use this for multiple ports instead of single port field)",
+                    "description": "List of ports",
                     "type": "array",
                     "items": {
                         "type": "object",
@@ -512,9 +512,10 @@
                             },
                             "port": {
                                 "description": "Service port",
-                                "type": "integer",
-                                "maximum": 65535,
-                                "minimum": 1
+                                "type": [
+                                    "integer",
+                                    "string"
+                                ]
                             },
                             "protocol": {
                                 "description": "Protocol",
@@ -528,9 +529,10 @@
                             },
                             "targetPort": {
                                 "description": "Target port on the container",
-                                "type": "integer",
-                                "maximum": 65535,
-                                "minimum": 1
+                                "type": [
+                                    "integer",
+                                    "string"
+                                ]
                             }
                         }
                     }
