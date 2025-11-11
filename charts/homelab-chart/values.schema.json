@@ -479,39 +479,8 @@
             "type": "object"
         },
         "service": {
-            "description": "List of ports (use this for multiple ports instead of single port field)",
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "description": "Port name",
-                        "type": "string"
-                    },
-                    "port": {
-                        "description": "Service port",
-                        "type": "integer",
-                        "maximum": 65535,
-                        "minimum": 1
-                    },
-                    "protocol": {
-                        "description": "Protocol",
-                        "default": "TCP",
-                        "type": "string",
-                        "enum": [
-                            "TCP",
-                            "UDP",
-                            "SCTP"
-                        ]
-                    },
-                    "targetPort": {
-                        "description": "Target port on the container",
-                        "type": "integer",
-                        "maximum": 65535,
-                        "minimum": 1
-                    }
-                }
-            },
+            "description": "Service configuration to expose the application",
+            "type": "object",
             "properties": {
                 "create": {
                     "description": "Specifies whether a Service should be created",
@@ -529,6 +498,41 @@
                     ],
                     "maximum": 65535,
                     "minimum": 1
+                },
+                "ports": {
+                    "description": "List of ports (use this for multiple ports instead of single port field)",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Port name",
+                                "type": "string"
+                            },
+                            "port": {
+                                "description": "Service port",
+                                "type": "integer",
+                                "maximum": 65535,
+                                "minimum": 1
+                            },
+                            "protocol": {
+                                "description": "Protocol",
+                                "default": "TCP",
+                                "type": "string",
+                                "enum": [
+                                    "TCP",
+                                    "UDP",
+                                    "SCTP"
+                                ]
+                            },
+                            "targetPort": {
+                                "description": "Target port on the container",
+                                "type": "integer",
+                                "maximum": 65535,
+                                "minimum": 1
+                            }
+                        }
+                    }
                 },
                 "type": {
                     "description": "Kubernetes Service type",
