@@ -135,8 +135,53 @@
                     "additionalProperties": true
                 },
                 "securityContext": {
-                    "description": "Security context for the container (capabilities, readOnlyRootFilesystem, runAsNonRoot, runAsUser, etc.)",
-                    "type": "object",
+                    "description": "List of containers (use this for multiple containers instead of single container configuration above)",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "env": {
+                                "description": "Environment variables",
+                                "type": "object"
+                            },
+                            "envFrom": {
+                                "description": "Environment variables from ConfigMaps/Secrets",
+                                "type": "array"
+                            },
+                            "image": {
+                                "description": "Container image configuration",
+                                "type": "object"
+                            },
+                            "livenessProbe": {
+                                "description": "Liveness probe configuration",
+                                "type": "object"
+                            },
+                            "name": {
+                                "description": "Container name",
+                                "type": "string"
+                            },
+                            "ports": {
+                                "description": "Container ports",
+                                "type": "array"
+                            },
+                            "readinessProbe": {
+                                "description": "Readiness probe configuration",
+                                "type": "object"
+                            },
+                            "resources": {
+                                "description": "Resource limits and requests",
+                                "type": "object"
+                            },
+                            "securityContext": {
+                                "description": "Security context for this container",
+                                "type": "object"
+                            },
+                            "volumeMounts": {
+                                "description": "Volume mounts for this container",
+                                "type": "array"
+                            }
+                        }
+                    },
                     "additionalProperties": true
                 },
                 "tolerations": {
@@ -368,8 +413,39 @@
             }
         },
         "service": {
-            "description": "Service configuration to expose the application",
-            "type": "object",
+            "description": "List of ports (use this for multiple ports instead of single port field)",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "Port name",
+                        "type": "string"
+                    },
+                    "port": {
+                        "description": "Service port",
+                        "type": "integer",
+                        "maximum": 65535,
+                        "minimum": 1
+                    },
+                    "protocol": {
+                        "description": "Protocol",
+                        "default": "TCP",
+                        "type": "string",
+                        "enum": [
+                            "TCP",
+                            "UDP",
+                            "SCTP"
+                        ]
+                    },
+                    "targetPort": {
+                        "description": "Target port on the container",
+                        "type": "integer",
+                        "maximum": 65535,
+                        "minimum": 1
+                    }
+                }
+            },
             "properties": {
                 "create": {
                     "description": "Specifies whether a Service should be created",
@@ -377,9 +453,14 @@
                     "type": "boolean"
                 },
                 "port": {
-                    "description": "Service port",
-                    "default": 80,
-                    "type": "integer",
+                    "description": "Name for the port",
+                    "default": "http",
+                    "type": "string",
+                    "enum": [
+                        "TCP",
+                        "UDP",
+                        "SCTP"
+                    ],
                     "maximum": 65535,
                     "minimum": 1
                 },

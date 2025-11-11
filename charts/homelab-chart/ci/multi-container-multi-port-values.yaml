@@ -1,0 +1,87 @@
+# Example values file demonstrating multi-port service and multi-container deployment
+deployment:
+  create: true
+  replicas: 1
+
+  # Multiple containers with individual configurations
+  containers:
+    - name: main-app
+      image:
+        repository: nginx
+        tag: "1.25"
+        pullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 200m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: http
+        initialDelaySeconds: 30
+        periodSeconds: 10
+      readinessProbe:
+        httpGet:
+          path: /ready
+          port: http
+        initialDelaySeconds: 5
+        periodSeconds: 5
+      env:
+        APP_ENV: "production"
+        LOG_LEVEL: "info"
+      ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        readOnlyRootFilesystem: true
+
+    - name: metrics-sidecar
+      image:
+        repository: prom/statsd-exporter
+        tag: "v0.26.0"
+        pullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
+      ports:
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+        - name: statsd
+          containerPort: 9125
+          protocol: UDP
+      env:
+        STATSD_MAPPING_CONFIG: "/etc/statsd/mapping.conf"
+
+service:
+  create: true
+  type: ClusterIP
+
+  # Multiple ports configuration
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+    - name: metrics
+      port: 9090
+      targetPort: 9090
+      protocol: TCP
+    - name: statsd
+      port: 9125
+      targetPort: 9125
+      protocol: UDP
+
+serviceAccount:
+  create: true
+  automount: true

@@ -31,59 +31,36 @@ spec:
       serviceAccountName: {{ include "homelab-chart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.deployment.podSecurityContext | nindent 8 }}
+      {{- $pvcVolumeMounts := list }}
+      {{- if and .Values.pvc.create .Values.pvc.pvcs }}
+      {{- range .Values.pvc.pvcs }}
+      {{- if .mountPath }}
+      {{- $pvcVolumeMounts = append $pvcVolumeMounts (include "homelab-chart.pvcVolumeMount" . | fromYaml) }}
+      {{- end }}
+      {{- end }}
+      {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
-          {{- if .Values.securityContext }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          {{- end }}
-          image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
-          ports:
-            - name: {{ .Values.service.name | default "http" }}
-              containerPort: {{ .Values.service.port }}
-              protocol: {{ .Values.service.protocol | default "TCP" }}
-          {{- with .Values.deployment.livenessProbe }} 
-          livenessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.deployment.readinessProbe }} 
-          readinessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          resources:
-            {{- toYaml .Values.deployment.resources | nindent 12 }}
-          {{- $volumeMounts := list }}
-          {{- if and .Values.pvc.create .Values.pvc.pvcs }}
-          {{- range .Values.pvc.pvcs }}
-          {{- if .mountPath }}
-          {{- $volumeMounts = append $volumeMounts (dict "name" (printf "pvc-%s" .name) "mountPath" .mountPath "readOnly" (default false .readOnly)) }}
-          {{- end }}
-          {{- end }}
-          {{- end }}
-          {{- if .Values.deployment.volumeMounts }}
-          {{- $volumeMounts = concat $volumeMounts .Values.deployment.volumeMounts }}
-          {{- end }}
-          {{- if $volumeMounts }}
-          volumeMounts:
-            {{- toYaml $volumeMounts | nindent 12 }}
-          {{- end }}
-          {{- with .Values.deployment.env }}
-          env:
-            {{- range $key, $value := . }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
-            {{- end }}
-          {{- end }}
-          {{- with .Values.deployment.envFrom }}
-          envFrom:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+        {{- if .Values.deployment.containers }}
+        {{- range .Values.deployment.containers }}
+        {{- include "homelab-chart.container" (dict "container" . "root" $ "pvcVolumeMounts" $pvcVolumeMounts) | nindent 8 }}
+        {{- end }}
+        {{- else }}
+        {{- $ports := list }}
+        {{- if .Values.service.ports }}
+        {{- range .Values.service.ports }}
+        {{- $ports = append $ports (dict "name" .name "containerPort" (default .port .targetPort) "protocol" (default "TCP" .protocol)) }}
+        {{- end }}
+        {{- else }}
+        {{- $ports = append $ports (dict "name" (default "http" .Values.service.name) "containerPort" (default (default 80 .Values.service.port) .Values.service.targetPort) "protocol" (default "TCP" .Values.service.protocol)) }}
+        {{- end }}
+        {{- $container := dict "name" .Chart.Name "image" .Values.deployment.image "securityContext" .Values.deployment.securityContext "ports" $ports "livenessProbe" .Values.deployment.livenessProbe "readinessProbe" .Values.deployment.readinessProbe "resources" .Values.deployment.resources "volumeMounts" .Values.deployment.volumeMounts "env" .Values.deployment.env "envFrom" .Values.deployment.envFrom }}
+        {{- include "homelab-chart.container" (dict "container" $container "root" . "pvcVolumeMounts" $pvcVolumeMounts) | nindent 8 }}
+        {{- end }}
       {{- $volumes := list }}
       {{- if and .Values.pvc.create .Values.pvc.pvcs }}
       {{- range .Values.pvc.pvcs }}
       {{- if .mountPath }}
-      {{- $volumes = append $volumes (dict "name" (printf "pvc-%s" .name) "persistentVolumeClaim" (dict "claimName" .name)) }}
+      {{- $volumes = append $volumes (include "homelab-chart.pvcVolume" . | fromYaml) }}
       {{- end }}
       {{- end }}
       {{- end }}

@@ -84,3 +84,86 @@ Create the name of the service account to use
   {{- end -}}
   {{- $result | toYaml -}}
 {{- end -}}
+
+{{/*
+Render a container definition. Accepts a dict with:
+  - container: the container configuration object
+  - root: the root context (.)
+  - pvcVolumeMounts: optional list of PVC volume mounts to merge
+*/}}
+{{- define "homelab-chart.container" -}}
+{{- $container := .container -}}
+{{- $root := .root -}}
+{{- $pvcVolumeMounts := .pvcVolumeMounts | default list -}}
+- name: {{ $container.name }}
+  {{- if $container.securityContext }}
+  securityContext:
+    {{- toYaml $container.securityContext | nindent 4 }}
+  {{- end }}
+  image: "{{ $container.image.repository }}:{{ $container.image.tag }}"
+  imagePullPolicy: {{ $container.image.pullPolicy | default "IfNotPresent" }}
+  {{- if $container.ports }}
+  ports:
+    {{- range $container.ports }}
+    - name: {{ .name }}
+      containerPort: {{ .containerPort }}
+      protocol: {{ .protocol | default "TCP" }}
+    {{- end }}
+  {{- end }}
+  {{- with $container.livenessProbe }}
+  livenessProbe:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $container.readinessProbe }}
+  readinessProbe:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if $container.resources }}
+  resources:
+    {{- toYaml $container.resources | nindent 4 }}
+  {{- end }}
+  {{- $allVolumeMounts := list }}
+  {{- if $pvcVolumeMounts }}
+  {{- $allVolumeMounts = concat $allVolumeMounts $pvcVolumeMounts }}
+  {{- end }}
+  {{- if $container.volumeMounts }}
+  {{- $allVolumeMounts = concat $allVolumeMounts $container.volumeMounts }}
+  {{- end }}
+  {{- if $allVolumeMounts }}
+  volumeMounts:
+    {{- toYaml $allVolumeMounts | nindent 4 }}
+  {{- end }}
+  {{- with $container.env }}
+  env:
+    {{- range $key, $value := . }}
+    - name: {{ $key }}
+      value: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+  {{- with $container.envFrom }}
+  envFrom:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end -}}
+
+{{/*
+Create a volume mount dictionary from a PVC configuration.
+Accepts a PVC configuration object with: name, mountPath, readOnly, and optionally subPath.
+Returns a dictionary suitable for use in volumeMounts.
+*/}}
+{{- define "homelab-chart.pvcVolumeMount" -}}
+{{- $volumeMount := dict "name" (printf "pvc-%s" .name) "mountPath" .mountPath "readOnly" (default false .readOnly) -}}
+{{- if .subPath -}}
+{{- $_ := set $volumeMount "subPath" .subPath -}}
+{{- end -}}
+{{- $volumeMount | toYaml -}}
+{{- end -}}
+
+{{/*
+Create a volume definition from a PVC configuration.
+Accepts a PVC configuration object with: name.
+Returns a dictionary suitable for use in volumes.
+*/}}
+{{- define "homelab-chart.pvcVolume" -}}
+{{- dict "name" (printf "pvc-%s" .name) "persistentVolumeClaim" (dict "claimName" .name) | toYaml -}}
+{{- end -}}

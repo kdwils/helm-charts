@@ -113,14 +113,78 @@ deployment:
     # runAsNonRoot: true
     # runAsUser: 1000
 
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Container name"},"image":{"type":"object","description":"Container image configuration"},"resources":{"type":"object","description":"Resource limits and requests"},"livenessProbe":{"type":"object","description":"Liveness probe configuration"},"readinessProbe":{"type":"object","description":"Readiness probe configuration"},"env":{"type":"object","description":"Environment variables"},"envFrom":{"type":"array","description":"Environment variables from ConfigMaps/Secrets"},"volumeMounts":{"type":"array","description":"Volume mounts for this container"},"securityContext":{"type":"object","description":"Security context for this container"},"ports":{"type":"array","description":"Container ports"}};description:List of containers (use this for multiple containers instead of single container configuration above)
+  # containers:
+  #   - name: main-app
+  #     image:
+  #       repository: nginx
+  #       tag: latest
+  #       pullPolicy: IfNotPresent
+  #     resources:
+  #       limits:
+  #         cpu: 100m
+  #         memory: 128Mi
+  #       requests:
+  #         cpu: 100m
+  #         memory: 128Mi
+  #     livenessProbe:
+  #       httpGet:
+  #         path: /healthz
+  #         port: http
+  #     readinessProbe:
+  #       httpGet:
+  #         path: /ready
+  #         port: http
+  #     env:
+  #       ENV_VAR: "value"
+  #     envFrom:
+  #       - configMapRef:
+  #           name: my-config
+  #     volumeMounts:
+  #       - name: data
+  #         mountPath: /data
+  #     securityContext:
+  #       runAsNonRoot: true
+  #       runAsUser: 1000
+  #     ports:
+  #       - name: http
+  #         containerPort: 8080
+  #         protocol: TCP
+  #   - name: sidecar
+  #     image:
+  #       repository: sidecar-image
+  #       tag: v1.0
+  #       pullPolicy: IfNotPresent
+  #     ports:
+  #       - name: metrics
+  #         containerPort: 9090
+  #         protocol: TCP
+
 # @schema type:object;description:Service configuration to expose the application
 service:
   # @schema type:boolean;default:true;description:Specifies whether a Service should be created
   create: false
   # @schema type:string;enum:[ClusterIP,NodePort,LoadBalancer,ExternalName];default:ClusterIP;description:Kubernetes Service type
   type: ClusterIP
-  # @schema type:integer;minimum:1;maximum:65535;default:80;description:Service port
+  # @schema type:integer;minimum:1;maximum:65535;default:80;description:Service port (used when ports array is not specified)
   port: 80
+  # @schema type:integer;minimum:1;maximum:65535;description:Target port on the container (optional, defaults to port value)
+  # targetPort: 8080
+  # @schema type:string;enum:[TCP,UDP,SCTP];default:TCP;description:Protocol for the port
+  # protocol: TCP
+  # @schema type:string;default:http;description:Name for the port
+  # name: http
+
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Port name"},"port":{"type":"integer","minimum":1,"maximum":65535,"description":"Service port"},"targetPort":{"type":"integer","minimum":1,"maximum":65535,"description":"Target port on the container"},"protocol":{"type":"string","enum":["TCP","UDP","SCTP"],"default":"TCP","description":"Protocol"}};description:List of ports (use this for multiple ports instead of single port field)
+  # ports:
+  #   - name: http
+  #     port: 80
+  #     targetPort: 8080
+  #     protocol: TCP
+  #   - name: metrics
+  #     port: 9090
+  #     targetPort: 9090
+  #     protocol: TCP
 
 # @schema type:object;description:Ingress configuration to expose the application externally
 ingress:
