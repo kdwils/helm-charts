@@ -44,7 +44,7 @@ deployment:
     - name: sidecar
       image:
         repository: ghcr.io/kdwils/go-hello
-        tag: "v0.26.0"
+        tag: main
         pullPolicy: IfNotPresent
       resources:
         limits:
