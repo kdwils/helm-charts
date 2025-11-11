@@ -67,7 +67,7 @@ service:
       port: 80
       targetPort: 8080
       protocol: TCP
-    - name: http
+    - name: http2
       port: 81
       targetPort: http2
       protocol: TCP
