@@ -108,6 +108,10 @@
                     "description": "Override the full resource name",
                     "type": "string"
                 },
+                "hostname": {
+                    "description": "pod hostname",
+                    "type": "string"
+                },
                 "image": {
                     "description": "Container image configuration",
                     "type": "object",

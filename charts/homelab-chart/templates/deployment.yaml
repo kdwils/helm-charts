@@ -9,6 +9,9 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.deployment.replicas }}
   {{- end }}
+  {{- with .Values.deployment.hostname }}
+  hostname: {{ . }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "homelab-chart.selectorLabels" . | nindent 6 }}
