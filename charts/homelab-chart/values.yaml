@@ -167,9 +167,9 @@ service:
   create: false
   # @schema type:string;enum:[ClusterIP,NodePort,LoadBalancer,ExternalName];default:ClusterIP;description:Kubernetes Service type
   type: ClusterIP
-  # @schema type:[integer,string];minimum:1;maximum:65535;default:80;description:Service port
+  # @schema type:[integer,string]default:0;description:Service port
   port: 0
-  # @schema type:[integer,string,null];minimum:1;maximum:65535;description:Target port on the container
+  # @schema type:[integer,string,null];description:Target port on the container
   targetPort: 0
   # @schema type:string;enum:[TCP,UDP,SCTP];default:TCP;description:Protocol for the port
   protocol: TCP

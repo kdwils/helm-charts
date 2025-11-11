@@ -494,13 +494,10 @@
                 },
                 "port": {
                     "description": "Service port",
-                    "default": 80,
                     "type": [
                         "integer",
                         "string"
-                    ],
-                    "maximum": 65535,
-                    "minimum": 1
+                    ]
                 },
                 "ports": {
                     "description": "List of ports (use this for multiple ports instead of single port field)",
@@ -553,9 +550,7 @@
                         "integer",
                         "string",
                         "null"
-                    ],
-                    "maximum": 65535,
-                    "minimum": 1
+                    ]
                 },
                 "type": {
                     "description": "Kubernetes Service type",
