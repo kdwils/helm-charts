@@ -42,6 +42,7 @@ Helm chart for generic kubernetes deployments
 | httproute.hostnames | list | `[]` |  |
 | httproute.parentRefs | list | `[]` |  |
 | httproute.rules | list | `[]` |  |
+| httproutes | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.create | bool | `false` |  |
@@ -51,6 +52,8 @@ Helm chart for generic kubernetes deployments
 | ingress.tls | list | `[]` |  |
 | pvc.create | bool | `false` |  |
 | pvc.pvcs | list | `[]` |  |
+| securityPolicies | list | `[]` |  |
+| securityPolicy | object | `{}` |  |
 | service.create | bool | `false` |  |
 | service.port | int | `80` |  |
 | service.type | string | `"ClusterIP"` |  |

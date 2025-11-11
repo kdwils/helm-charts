@@ -291,6 +291,35 @@
                 }
             }
         },
+        "httproutes": {
+            "description": "List of HTTPRoute resources to create",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "annotations": {
+                        "description": "Annotations for the HTTPRoute",
+                        "type": "object"
+                    },
+                    "hostnames": {
+                        "description": "List of hostnames",
+                        "type": "array"
+                    },
+                    "name": {
+                        "description": "Name of the HTTPRoute resource (required)",
+                        "type": "string"
+                    },
+                    "parentRefs": {
+                        "description": "Parent references (Gateways)",
+                        "type": "array"
+                    },
+                    "rules": {
+                        "description": "Routing rules",
+                        "type": "array"
+                    }
+                }
+            }
+        },
         "ingress": {
             "description": "Ingress configuration to expose the application externally",
             "type": "object",
@@ -411,6 +440,39 @@
                     }
                 }
             }
+        },
+        "securityPolicies": {
+            "description": "List of SecurityPolicy resources to create",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "annotations": {
+                        "description": "Annotations for the SecurityPolicy",
+                        "type": "object"
+                    },
+                    "extAuth": {
+                        "description": "External authentication configuration",
+                        "type": "object"
+                    },
+                    "name": {
+                        "description": "Name of the SecurityPolicy resource (required)",
+                        "type": "string"
+                    },
+                    "targetNamespace": {
+                        "description": "Namespace of the target HTTPRoute (optional)",
+                        "type": "string"
+                    },
+                    "targetRoute": {
+                        "description": "Name of the HTTPRoute to apply this policy to (required)",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securityPolicy": {
+            "description": "Envoy Gateway SecurityPolicy for the HTTPRoute",
+            "type": "object"
         },
         "service": {
             "description": "List of ports (use this for multiple ports instead of single port field)",
