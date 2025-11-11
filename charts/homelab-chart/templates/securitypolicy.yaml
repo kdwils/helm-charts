@@ -4,11 +4,8 @@ kind: SecurityPolicy
 metadata:
   name: {{ include "homelab-chart.fullname" . }}
   labels:
-  {{- include "homelab-chart.labels" . | nindent 4 }}
-  {{- with .Values.httproute.annotations }}
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  {{- with .Values.httproute.annotations }}
+    {{- include "homelab-chart.labels" . | nindent 4 }}
+  {{- with .Values.securityPolicy.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -21,5 +18,37 @@ spec:
   extAuth:
     {{- toYaml .Values.securityPolicy.extAuth | nindent 4 }}
   {{- end }}
+{{- end }}
+---
+{{- range .Values.securityPolicies }}
+{{- if not .name }}
+{{- fail "securityPolicies entry is missing required field: name" }}
+{{- end }}
+{{- if not .targetRoute }}
+{{- fail "securityPolicies entry is missing required field: targetRoute" }}
+{{- end }}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "homelab-chart.labels" $ | nindent 4 }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: {{ .targetRoute }}
+      {{- if .targetNamespace }}
+      namespace: {{ .targetNamespace }}
+      {{- end }}
+  {{- if .extAuth }}
+  extAuth:
+    {{- toYaml .extAuth | nindent 4 }}
+  {{- end }}
+---
 {{- end }}
 

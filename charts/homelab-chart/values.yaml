@@ -229,6 +229,61 @@ httproute:
   #     - name: my-service
   #       port: 80
 
+# @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the HTTPRoute resource (required)","required":true},"annotations":{"type":"object","description":"Annotations for the HTTPRoute"},"parentRefs":{"type":"array","description":"Parent references (Gateways)"},"hostnames":{"type":"array","description":"List of hostnames"},"rules":{"type":"array","description":"Routing rules"}};description:List of HTTPRoute resources to create
+httproutes: []
+# - name: api-route
+#   parentRefs:
+#     - name: gateway
+#       namespace: gateway-system
+#   hostnames:
+#     - api.example.com
+#   rules:
+#     - matches:
+#         - path:
+#             type: PathPrefix
+#             value: /api
+#       backendRefs:
+#         - name: api-service
+#           port: 8080
+# - name: web-route
+#   parentRefs:
+#     - name: gateway
+#       namespace: gateway-system
+#   hostnames:
+#     - web.example.com
+#   rules:
+#     - backendRefs:
+#         - name: web-service
+#           port: 80
+
+# @schema type:object;description:Envoy Gateway SecurityPolicy for the HTTPRoute
+securityPolicy: {}
+#  extAuth:
+#    grpc:
+#      backendRef:
+#        name: ext-auth-service
+#        port: 9000
+
+# @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the SecurityPolicy resource (required)","required":true},"targetRoute":{"type":"string","description":"Name of the HTTPRoute to apply this policy to (required)","required":true},"targetNamespace":{"type":"string","description":"Namespace of the target HTTPRoute (optional)"},"annotations":{"type":"object","description":"Annotations for the SecurityPolicy"},"extAuth":{"type":"object","description":"External authentication configuration"}};description:List of SecurityPolicy resources to create
+securityPolicies: []
+# - name: api-auth-policy
+#   targetRoute: api-route
+#   extAuth:
+#     grpc:
+#       backendRef:
+#         name: ext-auth-service
+#         port: 9000
+# - name: web-auth-policy
+#   targetRoute: web-route
+#   extAuth:
+#     http:
+#       backendRef:
+#         name: web-auth-service
+#         port: 8080
+#       path: /auth
+#       headersToBackend:
+#         - authorization
+
 # @schema type:object;description:Horizontal Pod Autoscaler configuration
 autoscaling:
   # @schema type:boolean;default:false;description:Enable horizontal pod autoscaling
