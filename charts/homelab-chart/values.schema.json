@@ -95,6 +95,13 @@
                     "default": true,
                     "type": "boolean"
                 },
+                "deployStrategy": {
+                    "type": "string",
+                    "enum": [
+                        "Recreate",
+                        "RollingUpdate"
+                    ]
+                },
                 "env": {
                     "description": "Environment variables as key-value pairs",
                     "type": "object",
@@ -178,9 +185,7 @@
                 },
                 "replicas": {
                     "description": "Number of pod replicas to deploy",
-                    "default": 1,
-                    "type": "integer",
-                    "minimum": 1
+                    "type": "integer"
                 },
                 "resources": {
                     "description": "Resource limits and requests for the container. We usually recommend not to specify default resources and to leave this as a conscious choice for the user",
