@@ -69,3 +69,22 @@ pvc:
       accessMode: ReadWriteOnce
       mountPath: /app/config
       readOnly: true
+
+configmap:
+  create: true
+  configmaps:
+    - name: app-settings
+      mountPath: /etc/app
+      readOnly: true
+      data:
+        app.config: |
+          server:
+            port: 8080
+            timeout: 30s
+        database.url: "postgres://db:5432/app"
+    - name: scripts
+      mountPath: /scripts
+      data:
+        startup.sh: |
+          #!/bin/bash
+          echo "Starting application..."

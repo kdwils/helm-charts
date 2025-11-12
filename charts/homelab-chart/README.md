@@ -1,6 +1,6 @@
 # homelab-chart
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 Helm chart for generic kubernetes deployments
 
@@ -18,6 +18,8 @@ Helm chart for generic kubernetes deployments
 | autoscaling.maxReplicas | int | `100` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| configmap.configmaps | list | `[]` |  |
+| configmap.create | bool | `false` |  |
 | deployment.affinity | object | `{}` |  |
 | deployment.containers | list | `[]` |  |
 | deployment.create | bool | `false` |  |

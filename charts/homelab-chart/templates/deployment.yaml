@@ -46,10 +46,19 @@ spec:
       {{- end }}
       {{- end }}
       {{- end }}
+      {{- $configMapVolumeMounts := list }}
+      {{- if and .Values.configmap.create .Values.configmap.configmaps }}
+      {{- range .Values.configmap.configmaps }}
+      {{- if .mountPath }}
+      {{- $configMapVolumeMounts = append $configMapVolumeMounts (include "homelab-chart.configMapVolumeMount" . | fromYaml) }}
+      {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- $allVolumeMounts := concat $pvcVolumeMounts $configMapVolumeMounts }}
       containers:
         {{- if .Values.deployment.containers }}
         {{- range .Values.deployment.containers }}
-        {{- include "homelab-chart.container" (dict "container" . "root" $ "pvcVolumeMounts" $pvcVolumeMounts) | nindent 8 }}
+        {{- include "homelab-chart.container" (dict "container" . "root" $ "pvcVolumeMounts" $allVolumeMounts) | nindent 8 }}
         {{- end }}
         {{- else }}
         {{- $ports := list }}
@@ -61,13 +70,20 @@ spec:
         {{- $ports = append $ports (dict "name" (default "http" .Values.service.name) "containerPort" (default (default 80 .Values.service.port) .Values.service.targetPort) "protocol" (default "TCP" .Values.service.protocol)) }}
         {{- end }}
         {{- $container := dict "name" .Chart.Name "image" .Values.deployment.image "securityContext" .Values.deployment.securityContext "ports" $ports "livenessProbe" .Values.deployment.livenessProbe "readinessProbe" .Values.deployment.readinessProbe "resources" .Values.deployment.resources "volumeMounts" .Values.deployment.volumeMounts "env" .Values.deployment.env "envFrom" .Values.deployment.envFrom }}
-        {{- include "homelab-chart.container" (dict "container" $container "root" . "pvcVolumeMounts" $pvcVolumeMounts) | nindent 8 }}
+        {{- include "homelab-chart.container" (dict "container" $container "root" . "pvcVolumeMounts" $allVolumeMounts) | nindent 8 }}
         {{- end }}
       {{- $volumes := list }}
       {{- if and .Values.pvc.create .Values.pvc.pvcs }}
       {{- range .Values.pvc.pvcs }}
       {{- if .mountPath }}
       {{- $volumes = append $volumes (include "homelab-chart.pvcVolume" . | fromYaml) }}
+      {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- if and .Values.configmap.create .Values.configmap.configmaps }}
+      {{- range .Values.configmap.configmaps }}
+      {{- if .mountPath }}
+      {{- $volumes = append $volumes (include "homelab-chart.configMapVolume" . | fromYaml) }}
       {{- end }}
       {{- end }}
       {{- end }}

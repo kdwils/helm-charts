@@ -1,0 +1,19 @@
+{{- if .Values.configmap.create -}}
+{{- range .Values.configmap.configmaps }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "homelab-chart.labels" $ | nindent 4 }}
+{{- if .data }}
+data:
+  {{- toYaml .data | nindent 2 }}
+{{- end }}
+{{- if .binaryData }}
+binaryData:
+  {{- toYaml .binaryData | nindent 2 }}
+{{- end }}
+{{- end }}
+{{- end }}

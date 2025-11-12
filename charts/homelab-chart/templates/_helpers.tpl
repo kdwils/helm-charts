@@ -167,3 +167,25 @@ Returns a dictionary suitable for use in volumes.
 {{- define "homelab-chart.pvcVolume" -}}
 {{- dict "name" (printf "pvc-%s" .name) "persistentVolumeClaim" (dict "claimName" .name) | toYaml -}}
 {{- end -}}
+
+{{/*
+Create a volume mount dictionary from a ConfigMap configuration.
+Accepts a ConfigMap configuration object with: name, mountPath, readOnly, and optionally subPath.
+Returns a dictionary suitable for use in volumeMounts.
+*/}}
+{{- define "homelab-chart.configMapVolumeMount" -}}
+{{- $volumeMount := dict "name" (printf "configmap-%s" .name) "mountPath" .mountPath "readOnly" (default false .readOnly) -}}
+{{- if .subPath -}}
+{{- $_ := set $volumeMount "subPath" .subPath -}}
+{{- end -}}
+{{- $volumeMount | toYaml -}}
+{{- end -}}
+
+{{/*
+Create a volume definition from a ConfigMap configuration.
+Accepts a ConfigMap configuration object with: name.
+Returns a dictionary suitable for use in volumes.
+*/}}
+{{- define "homelab-chart.configMapVolume" -}}
+{{- dict "name" (printf "configmap-%s" .name) "configMap" (dict "name" .name) | toYaml -}}
+{{- end -}}
