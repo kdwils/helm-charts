@@ -32,6 +32,58 @@
                 }
             }
         },
+        "configmap": {
+            "description": "ConfigMap configuration",
+            "type": "object",
+            "properties": {
+                "configmaps": {
+                    "description": "List of ConfigMaps to create and/or mount",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "binaryData": {
+                                "description": "Optional: Key-value pairs for binary data (base64 encoded)",
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "string"
+                                }
+                            },
+                            "data": {
+                                "description": "Key-value pairs for the ConfigMap data field (string values)",
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "string"
+                                }
+                            },
+                            "mountPath": {
+                                "description": "Optional: Auto-mount this ConfigMap at the specified path in the container",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "The exact name of the ConfigMap resource in Kubernetes",
+                                "type": "string",
+                                "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+                            },
+                            "readOnly": {
+                                "description": "Optional: Mount as read-only",
+                                "default": false,
+                                "type": "boolean"
+                            },
+                            "subPath": {
+                                "description": "Optional: Sub-path within the volume to mount a specific key",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "create": {
+                    "description": "Specifies whether ConfigMaps should be created",
+                    "default": false,
+                    "type": "boolean"
+                }
+            }
+        },
         "deployment": {
             "description": "Deployment configuration for the application",
             "type": "object",
