@@ -1,6 +1,7 @@
 deployment:
   create: true
   replicas: 2
+  deployStrategy: Recreate
   securityContext:
     runAsNonRoot: true
     runAsUser: 1000

@@ -12,6 +12,10 @@ spec:
   {{- with .Values.deployment.hostname }}
   hostname: {{ . }}
   {{- end }}
+  {{- with .Values.deployment.deployStrategy }}
+  strategy:
+    type: {{ . }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "homelab-chart.selectorLabels" . | nindent 6 }}

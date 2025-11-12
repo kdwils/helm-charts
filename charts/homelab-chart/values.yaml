@@ -17,8 +17,10 @@ serviceAccount:
 deployment:
   # @schema type:boolean;default:true;description:Specifies whether a Deployment should be created
   create: false
-  # @schema type:integer;minimum:1;default:1;description:Number of pod replicas to deploy
+  # @schema type:integer;description:Number of pod replicas to deploy
   replicas: 1
+  # @schema type:string;enum:[Recreate,RollingUpdate]
+  deployStrategy: "RollingUpdate"
   # @schema type:string;description:pod hostname
   hostname: ""
   # @schema type:object;description:Container image configuration
