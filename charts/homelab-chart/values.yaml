@@ -352,3 +352,21 @@ configmap:
   # If mountPath is specified, the ConfigMap will be automatically mounted to your deployment.
   # Use 'data' for string key-value pairs and 'binaryData' for base64-encoded binary data.
   # You can specify multiline values using YAML's | syntax for file-like configurations.
+
+# @schema type:object;description:Certificate configuration for cert-manager
+certificate:
+  # @schema type:boolean;default:false;description:Specifies whether Certificates should be created
+  create: false
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the Certificate resource","pattern":"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"},"secretName":{"type":"string","description":"Name of the secret to store the certificate"},"issuerRef":{"type":"object","description":"Reference to the Issuer or ClusterIssuer","properties":{"name":{"type":"string","description":"Name of the issuer"},"kind":{"type":"string","enum":["Issuer","ClusterIssuer"],"description":"Kind of the issuer"},"group":{"type":"string","description":"API group of the issuer"}}},"commonName":{"type":"string","description":"Common name for the certificate"},"dnsNames":{"type":"array","description":"List of DNS names for the certificate"},"duration":{"type":"string","description":"Certificate duration (e.g., 2160h for 90 days)"},"renewBefore":{"type":"string","description":"Renew certificate before expiration (e.g., 360h for 15 days)"}};description:List of Certificates to create
+  certificates: []
+  # - name: wildcard-tls
+  #   secretName: wildcard-tls
+  #   issuerRef:
+  #     name: letsencrypt-prod
+  #     kind: ClusterIssuer
+  #   commonName: "*.example.com"
+  #   dnsNames:
+  #     - "*.example.com"
+  #     - "*.int.example.com"
+  #   duration: "2160h"    # 90 days
+  #   renewBefore: "360h"  # 15 days

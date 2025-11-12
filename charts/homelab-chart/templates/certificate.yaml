@@ -1,0 +1,41 @@
+{{- if .Values.certificate.create -}}
+{{- range .Values.certificate.certificates -}}
+{{- $namespace := $.Release.Namespace -}}
+{{- $name := .name -}}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $name }}
+  namespace: {{ $namespace }}
+  labels:
+    {{- include "homelab-chart.labels" $ | nindent 4 }}
+spec:
+  secretName: {{ .secretName }}
+  {{- if .issuerRef }}
+  issuerRef:
+    name: {{ .issuerRef.name }}
+    {{- if .issuerRef.kind }}
+    kind: {{ .issuerRef.kind }}
+    {{- end }}
+    {{- if .issuerRef.group }}
+    group: {{ .issuerRef.group }}
+    {{- end }}
+  {{- end }}
+  {{- if .commonName }}
+  commonName: {{ .commonName | quote }}
+  {{- end }}
+  {{- if .dnsNames }}
+  dnsNames:
+    {{- range .dnsNames }}
+    - {{ . | quote }}
+    {{- end }}
+  {{- end }}
+  {{- if .duration }}
+  duration: {{ .duration }}
+  {{- end }}
+  {{- if .renewBefore }}
+  renewBefore: {{ .renewBefore }}
+  {{- end }}
+{{- end }}
+{{- end }}

@@ -18,6 +18,8 @@ Helm chart for generic kubernetes deployments
 | autoscaling.maxReplicas | int | `100` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| certificate.certificates | list | `[]` |  |
+| certificate.create | bool | `false` |  |
 | configmap.configmaps | list | `[]` |  |
 | configmap.create | bool | `false` |  |
 | deployment.affinity | object | `{}` |  |
