@@ -3,6 +3,19 @@ entries:
   homelab-chart:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-11-13T17:43:30.220884338Z"
+    description: Helm chart for generic kubernetes deployments
+    digest: 193c040ab802a74b8f6ae1c148277a299710ebbb163c9f5ffb8e4150cc746e43
+    maintainers:
+    - name: kdwils
+      url: https://github.com/kdwils
+    name: homelab-chart
+    type: application
+    urls:
+    - https://github.com/kdwils/helm-charts/releases/download/homelab-chart-0.1.5/homelab-chart-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-11-13T17:13:08.846975728Z"
     description: Helm chart for generic kubernetes deployments
     digest: da2b6f126f764625178153e896f3cf8a0ba1a2bea5b0a437ce2a8b3765b63dd4
@@ -209,4 +222,4 @@ entries:
     urls:
     - https://github.com/kdwils/helm-charts/releases/download/homelab-chart-0.0.1/homelab-chart-0.0.1.tgz
     version: 0.0.1
-generated: "2025-11-13T17:13:08.847071277Z"
+generated: "2025-11-13T17:43:30.221012356Z"
