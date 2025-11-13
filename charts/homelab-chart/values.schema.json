@@ -78,8 +78,7 @@
                             },
                             "name": {
                                 "description": "Name of the Certificate resource",
-                                "type": "string",
-                                "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+                                "type": "string"
                             },
                             "renewBefore": {
                                 "description": "Renew certificate before expiration (e.g., 360h for 15 days)",
@@ -129,8 +128,7 @@
                             },
                             "name": {
                                 "description": "The exact name of the ConfigMap resource in Kubernetes",
-                                "type": "string",
-                                "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+                                "type": "string"
                             },
                             "readOnly": {
                                 "description": "Optional: Mount as read-only",
@@ -555,8 +553,7 @@
                             },
                             "name": {
                                 "description": "The exact name of the PVC resource in Kubernetes",
-                                "type": "string",
-                                "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+                                "type": "string"
                             },
                             "readOnly": {
                                 "description": "Optional: Mount as read-only",
@@ -565,8 +562,7 @@
                             },
                             "size": {
                                 "description": "Storage size (e.g., 10Gi, 1Ti). Required when creating PVCs",
-                                "type": "string",
-                                "pattern": "^[0-9]+(Ei|Pi|Ti|Gi|Mi|Ki|E|P|T|G|M|K)$"
+                                "type": "string"
                             },
                             "storageClassName": {
                                 "description": "StorageClass name. Optional, uses cluster default if not specified",
