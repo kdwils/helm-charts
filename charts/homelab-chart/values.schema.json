@@ -32,6 +32,72 @@
                 }
             }
         },
+        "certificate": {
+            "description": "Certificate configuration for cert-manager",
+            "type": "object",
+            "properties": {
+                "certificates": {
+                    "description": "List of Certificates to create",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "commonName": {
+                                "description": "Common name for the certificate",
+                                "type": "string"
+                            },
+                            "dnsNames": {
+                                "description": "List of DNS names for the certificate",
+                                "type": "array"
+                            },
+                            "duration": {
+                                "description": "Certificate duration (e.g., 2160h for 90 days)",
+                                "type": "string"
+                            },
+                            "issuerRef": {
+                                "description": "Reference to the Issuer or ClusterIssuer",
+                                "type": "object",
+                                "properties": {
+                                    "group": {
+                                        "description": "API group of the issuer",
+                                        "type": "string"
+                                    },
+                                    "kind": {
+                                        "description": "Kind of the issuer",
+                                        "type": "string",
+                                        "enum": [
+                                            "Issuer",
+                                            "ClusterIssuer"
+                                        ]
+                                    },
+                                    "name": {
+                                        "description": "Name of the issuer",
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "name": {
+                                "description": "Name of the Certificate resource",
+                                "type": "string"
+                            },
+                            "renewBefore": {
+                                "description": "Renew certificate before expiration (e.g., 360h for 15 days)",
+                                "type": "string"
+                            },
+                            "secretName": {
+                                "description": "Name of the secret to store the certificate",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "create": {
+                    "description": "Specifies whether Certificates should be created",
+                    "default": false,
+                    "type": "boolean"
+                }
+            }
+        },
         "configmap": {
             "description": "ConfigMap configuration",
             "type": "object",
