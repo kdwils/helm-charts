@@ -117,7 +117,7 @@ deployment:
     # runAsNonRoot: true
     # runAsUser: 1000
 
-  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Container name"},"image":{"type":"object","description":"Container image configuration"},"resources":{"type":"object","description":"Resource limits and requests"},"livenessProbe":{"type":"object","description":"Liveness probe configuration"},"readinessProbe":{"type":"object","description":"Readiness probe configuration"},"env":{"type":"object","description":"Environment variables"},"envFrom":{"type":"array","description":"Environment variables from ConfigMaps/Secrets"},"volumeMounts":{"type":"array","description":"Volume mounts for this container"},"securityContext":{"type":"object","description":"Security context for this container"},"ports":{"type":"array","description":"Container ports"}};description:List of containers (use this for multiple containers instead of single container configuration above)
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Container name"},"image":{"type":"object","description":"Container image configuration"},"command":{"type":"array","description":"Entrypoint array (overrides container entrypoint)"},"args":{"type":"array","description":"Arguments to the entrypoint"},"resources":{"type":"object","description":"Resource limits and requests"},"livenessProbe":{"type":"object","description":"Liveness probe configuration"},"readinessProbe":{"type":"object","description":"Readiness probe configuration"},"env":{"type":"object","description":"Environment variables"},"envFrom":{"type":"array","description":"Environment variables from ConfigMaps/Secrets"},"volumeMounts":{"type":"array","description":"Volume mounts for this container"},"securityContext":{"type":"object","description":"Security context for this container"},"ports":{"type":"array","description":"Container ports"}};description:List of containers (use this for multiple containers instead of single container configuration above)
   containers: []
   # containers:
   #   - name: main-app
@@ -125,6 +125,11 @@ deployment:
   #       repository: nginx
   #       tag: latest
   #       pullPolicy: IfNotPresent
+  #     command:
+  #       - /bin/sh
+  #       - -c
+  #     args:
+  #       - echo "Hello World"
   #     resources:
   #       limits:
   #         cpu: 100m
@@ -305,7 +310,7 @@ autoscaling:
 pvc:
   # @schema type:boolean;default:false;description:Specifies whether PVCs should be created
   create: false
-  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"The exact name of the PVC resource in Kubernetes","pattern":"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"},"size":{"type":"string","description":"Storage size (e.g., 10Gi, 1Ti). Required when creating PVCs","pattern":"^[0-9]+(Ei|Pi|Ti|Gi|Mi|Ki|E|P|T|G|M|K)$"},"storageClassName":{"type":"string","description":"StorageClass name. Optional, uses cluster default if not specified"},"accessMode":{"type":"string","enum":["ReadWriteOnce","ReadOnlyMany","ReadWriteMany","ReadWriteOncePod"],"default":"ReadWriteOnce","description":"Access mode for the PVC"},"mountPath":{"type":"string","description":"Optional: Auto-mount this PVC at the specified path in the container"},"readOnly":{"type":"boolean","default":false,"description":"Optional: Mount as read-only"},"subPath":{"type":"string","description":"Optional: Sub-path within the volume to mount"}};description:List of PVCs to create and/or mount
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"The exact name of the PVC resource in Kubernetes"},"size":{"type":"string","description":"Storage size (e.g., 10Gi, 1Ti). Required when creating PVCs"},"storageClassName":{"type":"string","description":"StorageClass name. Optional, uses cluster default if not specified"},"accessMode":{"type":"string","enum":["ReadWriteOnce","ReadOnlyMany","ReadWriteMany","ReadWriteOncePod"],"default":"ReadWriteOnce","description":"Access mode for the PVC"},"mountPath":{"type":"string","description":"Optional: Auto-mount this PVC at the specified path in the container"},"readOnly":{"type":"boolean","default":false,"description":"Optional: Mount as read-only"},"subPath":{"type":"string","description":"Optional: Sub-path within the volume to mount"}};description:List of PVCs to create and/or mount
   pvcs: []
   # - name: my-app-data
   #   size: 10Gi
@@ -329,7 +334,7 @@ pvc:
 configmap:
   # @schema type:boolean;default:false;description:Specifies whether ConfigMaps should be created
   create: false
-  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"The exact name of the ConfigMap resource in Kubernetes","pattern":"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"},"data":{"type":"object","description":"Key-value pairs for the ConfigMap data field (string values)","additionalProperties":{"type":"string"}},"binaryData":{"type":"object","description":"Optional: Key-value pairs for binary data (base64 encoded)","additionalProperties":{"type":"string"}},"mountPath":{"type":"string","description":"Optional: Auto-mount this ConfigMap at the specified path in the container"},"readOnly":{"type":"boolean","default":false,"description":"Optional: Mount as read-only"},"subPath":{"type":"string","description":"Optional: Sub-path within the volume to mount a specific key"}};description:List of ConfigMaps to create and/or mount
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"The exact name of the ConfigMap resource in Kubernetes"},"data":{"type":"object","description":"Key-value pairs for the ConfigMap data field (string values)","additionalProperties":{"type":"string"}},"binaryData":{"type":"object","description":"Optional: Key-value pairs for binary data (base64 encoded)","additionalProperties":{"type":"string"}},"mountPath":{"type":"string","description":"Optional: Auto-mount this ConfigMap at the specified path in the container"},"readOnly":{"type":"boolean","default":false,"description":"Optional: Mount as read-only"},"subPath":{"type":"string","description":"Optional: Sub-path within the volume to mount a specific key"}};description:List of ConfigMaps to create and/or mount
   configmaps: []
   # - name: app-config
   #   mountPath: /etc/config
@@ -357,7 +362,7 @@ configmap:
 certificate:
   # @schema type:boolean;default:false;description:Specifies whether Certificates should be created
   create: false
-  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the Certificate resource","pattern":"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"},"secretName":{"type":"string","description":"Name of the secret to store the certificate"},"issuerRef":{"type":"object","description":"Reference to the Issuer or ClusterIssuer","properties":{"name":{"type":"string","description":"Name of the issuer"},"kind":{"type":"string","enum":["Issuer","ClusterIssuer"],"description":"Kind of the issuer"},"group":{"type":"string","description":"API group of the issuer"}}},"commonName":{"type":"string","description":"Common name for the certificate"},"dnsNames":{"type":"array","description":"List of DNS names for the certificate"},"duration":{"type":"string","description":"Certificate duration (e.g., 2160h for 90 days)"},"renewBefore":{"type":"string","description":"Renew certificate before expiration (e.g., 360h for 15 days)"}};description:List of Certificates to create
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the Certificate resource"},"secretName":{"type":"string","description":"Name of the secret to store the certificate"},"issuerRef":{"type":"object","description":"Reference to the Issuer or ClusterIssuer","properties":{"name":{"type":"string","description":"Name of the issuer"},"kind":{"type":"string","enum":["Issuer","ClusterIssuer"],"description":"Kind of the issuer"},"group":{"type":"string","description":"API group of the issuer"}}},"commonName":{"type":"string","description":"Common name for the certificate"},"dnsNames":{"type":"array","description":"List of DNS names for the certificate"},"duration":{"type":"string","description":"Certificate duration (e.g., 2160h for 90 days)"},"renewBefore":{"type":"string","description":"Renew certificate before expiration (e.g., 360h for 15 days)"}};description:List of Certificates to create
   certificates: []
   # - name: wildcard-tls
   #   secretName: wildcard-tls
