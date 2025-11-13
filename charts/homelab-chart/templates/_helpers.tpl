@@ -102,6 +102,14 @@ Render a container definition. Accepts a dict with:
   {{- end }}
   image: "{{ $container.image.repository }}:{{ $container.image.tag }}"
   imagePullPolicy: {{ $container.image.pullPolicy | default "IfNotPresent" }}
+  {{- with $container.command }}
+  command:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $container.args }}
+  args:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- if $container.ports }}
   ports:
     {{- range $container.ports }}

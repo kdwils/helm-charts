@@ -78,7 +78,8 @@
                             },
                             "name": {
                                 "description": "Name of the Certificate resource",
-                                "type": "string"
+                                "type": "string",
+                                "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
                             },
                             "renewBefore": {
                                 "description": "Renew certificate before expiration (e.g., 360h for 15 days)",
@@ -165,6 +166,14 @@
                     "items": {
                         "type": "object",
                         "properties": {
+                            "args": {
+                                "description": "Arguments to the entrypoint",
+                                "type": "array"
+                            },
+                            "command": {
+                                "description": "Entrypoint array (overrides container entrypoint)",
+                                "type": "array"
+                            },
                             "env": {
                                 "description": "Environment variables",
                                 "type": "object"

@@ -1,0 +1,24 @@
+deployment:
+  create: true
+  replicas: 1
+  containers:
+    - name: test-container
+      image:
+        repository: busybox
+        tag: latest
+        pullPolicy: IfNotPresent
+      command:
+        - /bin/sh
+        - -c
+      args:
+        - echo "Hello World" && sleep 3600
+      ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+
+service:
+  create: true
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
