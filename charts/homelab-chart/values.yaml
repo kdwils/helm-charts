@@ -88,6 +88,15 @@ deployment:
   # @schema type:object;additionalProperties:true;description:Labels to add to the pod
   podLabels: {}
 
+  # @schema type:array;description:Entrypoint array (overrides the container's ENTRYPOINT)
+  command: []
+  # - /bin/sh
+  # - -c
+
+  # @schema type:array;description:Arguments to the entrypoint (overrides the container's CMD)
+  args: []
+  # - echo "Hello World"
+
   # @schema type:object;additionalProperties:true;description:Environment variables as key-value pairs
   env: {}
   # - ENV_VAR1: "value1"

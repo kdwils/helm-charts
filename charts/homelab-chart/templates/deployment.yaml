@@ -69,7 +69,7 @@ spec:
         {{- else }}
         {{- $ports = append $ports (dict "name" (default "http" .Values.service.name) "containerPort" (default (default 80 .Values.service.port) .Values.service.targetPort) "protocol" (default "TCP" .Values.service.protocol)) }}
         {{- end }}
-        {{- $container := dict "name" .Chart.Name "image" .Values.deployment.image "securityContext" .Values.deployment.securityContext "ports" $ports "livenessProbe" .Values.deployment.livenessProbe "readinessProbe" .Values.deployment.readinessProbe "resources" .Values.deployment.resources "volumeMounts" .Values.deployment.volumeMounts "env" .Values.deployment.env "envFrom" .Values.deployment.envFrom }}
+        {{- $container := dict "name" .Chart.Name "image" .Values.deployment.image "securityContext" .Values.deployment.securityContext "ports" $ports "livenessProbe" .Values.deployment.livenessProbe "readinessProbe" .Values.deployment.readinessProbe "resources" .Values.deployment.resources "volumeMounts" .Values.deployment.volumeMounts "env" .Values.deployment.env "envFrom" .Values.deployment.envFrom "command" .Values.deployment.command "args" .Values.deployment.args }}
         {{- include "homelab-chart.container" (dict "container" $container "root" . "pvcVolumeMounts" $allVolumeMounts) | nindent 8 }}
         {{- end }}
       {{- $volumes := list }}

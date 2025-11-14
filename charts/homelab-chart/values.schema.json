@@ -158,6 +158,14 @@
                     "type": "object",
                     "additionalProperties": true
                 },
+                "args": {
+                    "description": "Arguments to the entrypoint (overrides the container's CMD)",
+                    "type": "array"
+                },
+                "command": {
+                    "description": "Entrypoint array (overrides the container's ENTRYPOINT)",
+                    "type": "array"
+                },
                 "containers": {
                     "description": "List of containers (use this for multiple containers instead of single container configuration above)",
                     "type": "array",
