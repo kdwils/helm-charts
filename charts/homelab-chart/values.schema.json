@@ -98,6 +98,34 @@
                 }
             }
         },
+        "clusterissuer": {
+            "description": "ClusterIssuer configuration for cert-manager",
+            "type": "object",
+            "properties": {
+                "clusterissuers": {
+                    "description": "List of ClusterIssuers to create",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Name of the ClusterIssuer resource",
+                                "type": "string"
+                            },
+                            "spec": {
+                                "description": "Full ClusterIssuer spec (ACME, CA, Vault, etc.)",
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "create": {
+                    "description": "Specifies whether ClusterIssuers should be created",
+                    "default": false,
+                    "type": "boolean"
+                }
+            }
+        },
         "configmap": {
             "description": "ConfigMap configuration",
             "type": "object",
