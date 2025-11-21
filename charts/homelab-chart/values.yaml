@@ -384,3 +384,22 @@ certificate:
   #     - "*.int.example.com"
   #   duration: "2160h"    # 90 days
   #   renewBefore: "360h"  # 15 days
+
+# @schema type:object;description:ClusterIssuer configuration for cert-manager
+clusterissuer:
+  # @schema type:boolean;default:false;description:Specifies whether ClusterIssuers should be created
+  create: false
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the ClusterIssuer resource"},"spec":{"type":"object","description":"Full ClusterIssuer spec (ACME, CA, Vault, etc.)"}};description:List of ClusterIssuers to create
+  clusterissuers: []
+  # - name: letsencrypt-prod
+  #   spec:
+  #     acme:
+  #       server: https://acme-v02.api.letsencrypt.org/directory
+  #       privateKeySecretRef:
+  #         name: letsencrypt-prod
+  #       solvers:
+  #         - dns01:
+  #             cloudflare:
+  #               apiTokenSecretRef:
+  #                 name: cloudflare-api-token-secret
+  #                 key: api-token

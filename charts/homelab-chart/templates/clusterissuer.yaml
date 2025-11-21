@@ -1,0 +1,14 @@
+{{- if .Values.clusterissuer.create -}}
+{{- range .Values.clusterissuer.clusterissuers -}}
+{{- $name := .name -}}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "homelab-chart.labels" $ | nindent 4 }}
+spec:
+  {{- toYaml .spec | nindent 2 }}
+{{- end }}
+{{- end }}
