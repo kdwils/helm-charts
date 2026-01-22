@@ -1,0 +1,71 @@
+{{- if .Values.tcproute.create -}}
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: {{ include "homelab-chart.fullname" . }}
+  labels:
+    {{- include "homelab-chart.labels" . | nindent 4 }}
+  {{- with .Values.tcproute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.tcproute.parentRefs }}
+  parentRefs:
+    {{- toYaml .Values.tcproute.parentRefs | nindent 4 }}
+  {{- end }}
+  {{- if .Values.tcproute.hostnames }}
+  hostnames:
+    {{- range .Values.tcproute.hostnames }}
+    - {{ . | quote }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- if .Values.tcproute.rules -}}
+      {{- toYaml .Values.tcproute.rules | nindent 4 }}
+    {{- else }}
+    - backendRefs:
+      - group: ""
+        kind: Service
+        name: {{ include "homelab-chart.fullname" . }}
+        port: {{ .Values.service.port }}
+    {{- end }}
+{{- end }}
+---
+{{- range .Values.tcproutes }}
+{{- if not .name }}
+{{- fail "tcproutes entry is missing required field: name" }}
+{{- end }}
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "homelab-chart.labels" $ | nindent 4 }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .parentRefs }}
+  parentRefs:
+    {{- toYaml .parentRefs | nindent 4 }}
+  {{- end }}
+  {{- if .hostnames }}
+  hostnames:
+    {{- range .hostnames }}
+    - {{ . | quote }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- if .rules -}}
+      {{- toYaml .rules | nindent 4 }}
+    {{- else }}
+    - backendRefs:
+      - group: ""
+        kind: Service
+        name: {{ include "homelab-chart.fullname" $ }}
+        port: {{ $.Values.service.port }}
+    {{- end }}
+---
+{{- end }}
