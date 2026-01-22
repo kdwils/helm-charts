@@ -760,6 +760,78 @@
                     "type": "string"
                 }
             }
+        },
+        "tcproute": {
+            "description": "tcproute configuration for Gateway API",
+            "type": "object",
+            "properties": {
+                "create": {
+                    "description": "Specifies whether an tcproute should be created",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "hostnames": {
+                    "description": "List of hostnames for the tcproute",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "parentRefs": {
+                    "description": "Parent references (Gateways) for the tcproute",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Name of the Gateway",
+                                "type": "string"
+                            },
+                            "namespace": {
+                                "description": "Namespace of the Gateway",
+                                "type": "string"
+                            },
+                            "sectionName": {
+                                "description": "Section name of the Gateway listener",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "rules": {
+                    "description": "Routing rules for the tcproute",
+                    "type": "array"
+                }
+            }
+        },
+        "tcproutes": {
+            "description": "List of tcproute resources to create",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "annotations": {
+                        "description": "Annotations for the tcproute",
+                        "type": "object"
+                    },
+                    "hostnames": {
+                        "description": "List of hostnames",
+                        "type": "array"
+                    },
+                    "name": {
+                        "description": "Name of the tcproute resource (required)",
+                        "type": "string"
+                    },
+                    "parentRefs": {
+                        "description": "Parent references (Gateways)",
+                        "type": "array"
+                    },
+                    "rules": {
+                        "description": "Routing rules",
+                        "type": "array"
+                    }
+                }
+            }
         }
     }
 }
