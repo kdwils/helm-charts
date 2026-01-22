@@ -426,12 +426,13 @@ tcproute:
   #       port: 80
 
 # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the tcproute resource (required)"},"annotations":{"type":"object","description":"Annotations for the tcproute"},"parentRefs":{"type":"array","description":"Parent references (Gateways)"},"hostnames":{"type":"array","description":"List of hostnames"},"rules":{"type":"array","description":"Routing rules"}};description:List of tcproute resources to create
-tcproutes: []
-  # - name: nats
-  #   parentRefs:
-  #     - name: homelab
-  #       namespace: envoy-gateway-system
-  #   rules:
-  #     - backendRefs:
-  #         - name: nats
-  #           port: 4222
+tcproutes:
+  - name: nats
+    parentRefs:
+      - name: homelab
+        namespace: envoy-gateway-system
+        sectionName: nats
+    rules:
+      - backendRefs:
+          - name: nats
+            port: 4222
