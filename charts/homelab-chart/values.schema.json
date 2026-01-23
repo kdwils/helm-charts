@@ -832,6 +832,78 @@
                     }
                 }
             }
+        },
+        "tlsroute": {
+            "description": "tlsroute configuration for Gateway API",
+            "type": "object",
+            "properties": {
+                "create": {
+                    "description": "Specifies whether a tlsroute should be created",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "hostnames": {
+                    "description": "List of hostnames for the tlsroute",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "parentRefs": {
+                    "description": "Parent references (Gateways) for the tlsroute",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Name of the Gateway",
+                                "type": "string"
+                            },
+                            "namespace": {
+                                "description": "Namespace of the Gateway",
+                                "type": "string"
+                            },
+                            "sectionName": {
+                                "description": "Section name of the Gateway listener",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "rules": {
+                    "description": "Routing rules for the tlsroute",
+                    "type": "array"
+                }
+            }
+        },
+        "tlsroutes": {
+            "description": "List of tlsroute resources to create",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "annotations": {
+                        "description": "Annotations for the tlsroute",
+                        "type": "object"
+                    },
+                    "hostnames": {
+                        "description": "List of hostnames",
+                        "type": "array"
+                    },
+                    "name": {
+                        "description": "Name of the tlsroute resource (required)",
+                        "type": "string"
+                    },
+                    "parentRefs": {
+                        "description": "Parent references (Gateways)",
+                        "type": "array"
+                    },
+                    "rules": {
+                        "description": "Routing rules",
+                        "type": "array"
+                    }
+                }
+            }
         }
     }
 }

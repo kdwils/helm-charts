@@ -436,3 +436,34 @@ tcproutes: []
   #     - backendRefs:
   #         - name: nats
   #           port: 4222
+
+# @schema type:object;description:tlsroute configuration for Gateway API
+tlsroute:
+  # @schema type:boolean;default:false;description:Specifies whether a tlsroute should be created
+  create: false
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the Gateway"},"namespace":{"type":"string","description":"Namespace of the Gateway"},"sectionName":{"type":"string","description":"Section name of the Gateway listener"}};description:Parent references (Gateways) for the tlsroute
+  parentRefs: []
+  # - name: gateway
+  #   namespace: gateway-system
+  # @schema type:array;item:string;description:List of hostnames for the tlsroute
+  hostnames: []
+  # - example.com
+  # @schema type:array;description:Routing rules for the tlsroute
+  rules: []
+  # - backendRefs:
+  #     - name: my-service
+  #       port: 443
+
+# @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the tlsroute resource (required)"},"annotations":{"type":"object","description":"Annotations for the tlsroute"},"parentRefs":{"type":"array","description":"Parent references (Gateways)"},"hostnames":{"type":"array","description":"List of hostnames"},"rules":{"type":"array","description":"Routing rules"}};description:List of tlsroute resources to create
+tlsroutes: []
+  # - name: secure-app
+  #   parentRefs:
+  #     - name: homelab
+  #       namespace: envoy-gateway-system
+  #       sectionName: tls
+  #   hostnames:
+  #     - secure.example.com
+  #   rules:
+  #     - backendRefs:
+  #         - name: secure-app
+  #           port: 8443
