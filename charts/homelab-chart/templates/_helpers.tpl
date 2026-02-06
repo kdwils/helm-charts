@@ -126,6 +126,10 @@ Render a container definition. Accepts a dict with:
   readinessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- with $container.lifecycle }}
+  lifecycle:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- if $container.resources }}
   resources:
     {{- toYaml $container.resources | nindent 4 }}
