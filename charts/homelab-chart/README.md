@@ -1,6 +1,6 @@
 # homelab-chart
 
-![Version: 0.1.11](https://img.shields.io/badge/Version-0.1.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 Helm chart for generic kubernetes deployments
 
@@ -49,6 +49,7 @@ Helm chart for generic kubernetes deployments
 | deployment.tolerations | list | `[]` |  |
 | deployment.volumeMounts | list | `[]` |  |
 | deployment.volumes | list | `[]` |  |
+| extraContainers | list | `[]` |  |
 | httproute.create | bool | `false` |  |
 | httproute.hostnames | list | `[]` |  |
 | httproute.parentRefs | list | `[]` |  |
