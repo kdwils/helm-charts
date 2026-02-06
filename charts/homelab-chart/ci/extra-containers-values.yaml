@@ -2,30 +2,23 @@ deployment:
   create: true
   replicas: 1
   containers:
-    - name: main-app
+    - name: test-container
       image:
-        repository: ghcr.io/kdwils/go-hello
-        tag: main
-        pullPolicy: Always
-      resources:
-        limits:
-          cpu: 200m
-          memory: 256Mi
-        requests:
-          cpu: 100m
-          memory: 128Mi
+        repository: busybox
+        tag: latest
+        pullPolicy: IfNotPresent
+      command:
+        - /bin/sh
+        - -c
+      args:
+        - echo "Hello World" && sleep 3600
       ports:
         - name: http
           containerPort: 8080
           protocol: TCP
-      env:
-        APP_ENV: "production"
-  volumes:
-    - name: logs
-      emptyDir: {}
 
 extraContainers:
-  - name: log-sidecar
+  - name: test-sidecar
     image:
       repository: busybox
       tag: latest
@@ -34,45 +27,8 @@ extraContainers:
       - /bin/sh
       - -c
     args:
-      - "tail -f /var/log/app.log"
-    resources:
-      limits:
-        cpu: 50m
-        memory: 64Mi
-    volumeMounts:
-      - name: logs
-        mountPath: /var/log
-  - name: metrics-exporter
-    image:
-      repository: prom/node-exporter
-      tag: v1.5.0
-      pullPolicy: IfNotPresent
+      - echo "Hello World" && sleep 3600
     ports:
-      - name: metrics
-        containerPort: 9100
+      - name: http
+        containerPort: 8081
         protocol: TCP
-    resources:
-      limits:
-        cpu: 100m
-        memory: 128Mi
-
-service:
-  create: true
-  type: ClusterIP
-  ports:
-    - name: http
-      port: 80
-      targetPort: 8080
-      protocol: TCP
-    - name: metrics
-      port: 9100
-      targetPort: 9100
-      protocol: TCP
-
-pvc:
-  create: true
-  pvcs:
-    - name: app-data
-      size: 1Gi
-      accessMode: ReadWriteOnce
-      mountPath: /data
