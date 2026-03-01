@@ -668,6 +668,10 @@
                             "subPath": {
                                 "description": "Optional: Sub-path within the volume to mount",
                                 "type": "string"
+                            },
+                            "volumeName": {
+                                "description": "Optional: Override the volume name used in volumes/volumeMounts (defaults to pvc-{name})",
+                                "type": "string"
                             }
                         }
                     }
