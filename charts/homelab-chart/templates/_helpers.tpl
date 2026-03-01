@@ -164,7 +164,8 @@ Accepts a PVC configuration object with: name, mountPath, readOnly, and optional
 Returns a dictionary suitable for use in volumeMounts.
 */}}
 {{- define "homelab-chart.pvcVolumeMount" -}}
-{{- $volumeMount := dict "name" (printf "pvc-%s" .name) "mountPath" .mountPath "readOnly" (default false .readOnly) -}}
+{{- $volName := default (printf "pvc-%s" .name) .volumeName -}}
+{{- $volumeMount := dict "name" $volName "mountPath" .mountPath "readOnly" (default false .readOnly) -}}
 {{- if .subPath -}}
 {{- $_ := set $volumeMount "subPath" .subPath -}}
 {{- end -}}
@@ -173,11 +174,12 @@ Returns a dictionary suitable for use in volumeMounts.
 
 {{/*
 Create a volume definition from a PVC configuration.
-Accepts a PVC configuration object with: name.
+Accepts a PVC configuration object with: name, and optionally volumeName.
 Returns a dictionary suitable for use in volumes.
 */}}
 {{- define "homelab-chart.pvcVolume" -}}
-{{- dict "name" (printf "pvc-%s" .name) "persistentVolumeClaim" (dict "claimName" .name) | toYaml -}}
+{{- $volName := default (printf "pvc-%s" .name) .volumeName -}}
+{{- dict "name" $volName "persistentVolumeClaim" (dict "claimName" .name) | toYaml -}}
 {{- end -}}
 
 {{/*
