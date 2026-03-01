@@ -668,6 +668,10 @@
                             "subPath": {
                                 "description": "Optional: Sub-path within the volume to mount",
                                 "type": "string"
+                            },
+                            "volumeName": {
+                                "description": "Optional: Bind this PVC to a specific PersistentVolume by name",
+                                "type": "string"
                             }
                         }
                     }
