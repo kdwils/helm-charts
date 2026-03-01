@@ -13,6 +13,9 @@ spec:
   {{- if .storageClassName }}
   storageClassName: {{ .storageClassName | quote }}
   {{- end }}
+  {{- if .volumeName }}
+  volumeName: {{ .volumeName | quote }}
+  {{- end }}
   resources:
     requests:
       storage: {{ .size | default "10Gi" }}

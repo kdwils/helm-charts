@@ -670,7 +670,7 @@
                                 "type": "string"
                             },
                             "volumeName": {
-                                "description": "Optional: Override the volume name used in volumes/volumeMounts (defaults to pvc-{name})",
+                                "description": "Optional: Bind this PVC to a specific PersistentVolume by name",
                                 "type": "string"
                             }
                         }
