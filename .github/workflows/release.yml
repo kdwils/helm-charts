@@ -5,8 +5,14 @@ on:
     tags:
       - "v*.*.*"
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   release:
     uses: kdwils/homelab-workflow/.github/workflows/helm-publish-oci.yml@main
     with:
       charts_dir: charts/homelab-chart
+
+      name: releaser
