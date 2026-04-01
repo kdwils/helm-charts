@@ -201,3 +201,73 @@ Returns a dictionary suitable for use in volumes.
 {{- define "homelab-chart.configMapVolume" -}}
 {{- dict "name" (printf "configmap-%s" .name) "configMap" (dict "name" .name) | toYaml -}}
 {{- end -}}
+
+{{/*
+Render an HTTPRoute resource. Accepts a dict with:
+  - route: the HTTPRoute configuration object (name, annotations, parentRefs, hostnames, rules)
+  - root: the root context (.)
+*/}}
+{{- define "homelab-chart.httproute" -}}
+{{- $route := .route -}}
+{{- $root := .root -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $route.name }}
+  labels:
+    {{- include "homelab-chart.labels" $root | nindent 4 }}
+  {{- with $route.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if $route.parentRefs }}
+  parentRefs:
+    {{- range $route.parentRefs }}
+    - group: {{ .group | default "gateway.networking.k8s.io" }}
+      kind: {{ .kind | default "Gateway" }}
+      name: {{ .name }}
+      {{- with .namespace }}
+      namespace: {{ . }}
+      {{- end }}
+      {{- with .sectionName }}
+      sectionName: {{ . }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if $route.hostnames }}
+  hostnames:
+    {{- range $route.hostnames }}
+    - {{ . | quote }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- if $route.rules }}
+      {{- range $route.rules }}
+    - {{- with .name }}
+      name: {{ . }}
+      {{- end }}
+      matches:
+        {{- if .matches }}
+        {{- toYaml .matches | nindent 8 }}
+        {{- else }}
+        - path:
+            type: PathPrefix
+            value: /
+        {{- end }}
+      backendRefs:
+        {{- range .backendRefs }}
+        - name: {{ .name }}
+          port: {{ .port }}
+          weight: {{ .weight | default 1 }}
+        {{- end }}
+      {{- end }}
+    {{- else }}
+    - backendRefs:
+      - group: ""
+        kind: Service
+        name: {{ include "homelab-chart.fullname" $root }}
+        port: {{ $root.Values.service.port }}
+        weight: 1
+    {{- end }}
+{{- end -}}
