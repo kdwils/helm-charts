@@ -244,16 +244,16 @@ spec:
   rules:
     {{- if $route.rules }}
       {{- range $route.rules }}
-      - matches:
-        {{- if .matches }}
-        {{- toYaml .matches | nindent 8 }}
-        {{- else }}
-        - path:
-            type: PathPrefix
-            value: /
-        {{- end }}
+    - matches:
+      {{- if .matches }}
+      {{- toYaml .matches | nindent 8 }}
+      {{- else }}
+      - path:
+          type: PathPrefix
+          value: /
+      {{- end }}
       {{- with .name }}
-        name: {{ . }}
+      name: {{ . }}
       {{- end }}
       backendRefs:
         {{- range .backendRefs }}
