@@ -244,10 +244,7 @@ spec:
   rules:
     {{- if $route.rules }}
       {{- range $route.rules }}
-    - {{- with .name }}
-      name: {{ . }}
-      {{- end }}
-      matches:
+      - matches:
         {{- if .matches }}
         {{- toYaml .matches | nindent 8 }}
         {{- else }}
@@ -255,6 +252,9 @@ spec:
             type: PathPrefix
             value: /
         {{- end }}
+      {{- with .name }}
+        name: {{ . }}
+      {{- end }}
       backendRefs:
         {{- range .backendRefs }}
         - name: {{ .name }}
@@ -263,7 +263,11 @@ spec:
         {{- end }}
       {{- end }}
     {{- else }}
-    - backendRefs:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /
+      backendRefs:
       - group: ""
         kind: Service
         name: {{ include "homelab-chart.fullname" $root }}
