@@ -257,7 +257,9 @@ spec:
       {{- end }}
       backendRefs:
         {{- range .backendRefs }}
-        - name: {{ .name }}
+        - group: {{ .group | default "" | quote }}
+          kind: {{ .kind | default "Service" }}
+          name: {{ .name }}
           port: {{ .port }}
           weight: {{ .weight | default 1 }}
         {{- end }}
