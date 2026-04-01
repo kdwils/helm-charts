@@ -12,7 +12,17 @@ metadata:
 spec:
   {{- if .Values.httproute.parentRefs }}
   parentRefs:
-    {{- toYaml .Values.httproute.parentRefs | nindent 4 }}
+    {{- range .Values.httproute.parentRefs }}
+    - group: {{ .group | default "gateway.networking.k8s.io" }}
+      kind: {{ .kind | default "Gateway" }}
+      name: {{ .name }}
+      {{- with .namespace }}
+      namespace: {{ . }}
+      {{- end }}
+      {{- with .sectionName }}
+      sectionName: {{ . }}
+      {{- end }}
+    {{- end }}
   {{- end }}
   {{- if .Values.httproute.hostnames }}
   hostnames:
@@ -22,7 +32,25 @@ spec:
   {{- end }}
   rules:
     {{- if .Values.httproute.rules -}}
-      {{- toYaml .Values.httproute.rules | nindent 4 }}
+      {{- range .Values.httproute.rules }}
+    - {{- with .name }}
+      name: {{ . }}
+      {{- end }}
+      matches:
+        {{- if .matches }}
+        {{- toYaml .matches | nindent 8 }}
+        {{- else }}
+        - path:
+            type: PathPrefix
+            value: /
+        {{- end }}
+      backendRefs:
+        {{- range .backendRefs }}
+        - name: {{ .name }}
+          port: {{ .port }}
+          weight: {{ .weight | default 1 }}
+        {{- end }}
+      {{- end }}
     {{- else }}
     - backendRefs:
       - group: ""
@@ -49,7 +77,17 @@ metadata:
 spec:
   {{- if .parentRefs }}
   parentRefs:
-    {{- toYaml .parentRefs | nindent 4 }}
+    {{- range .parentRefs }}
+    - group: {{ .group | default "gateway.networking.k8s.io" }}
+      kind: {{ .kind | default "Gateway" }}
+      name: {{ .name }}
+      {{- with .namespace }}
+      namespace: {{ . }}
+      {{- end }}
+      {{- with .sectionName }}
+      sectionName: {{ . }}
+      {{- end }}
+    {{- end }}
   {{- end }}
   {{- if .hostnames }}
   hostnames:
@@ -59,7 +97,25 @@ spec:
   {{- end }}
   rules:
     {{- if .rules -}}
-      {{- toYaml .rules | nindent 4 }}
+      {{- range .rules }}
+    - {{- with .name }}
+      name: {{ . }}
+      {{- end }}
+      matches:
+        {{- if .matches }}
+        {{- toYaml .matches | nindent 8 }}
+        {{- else }}
+        - path:
+            type: PathPrefix
+            value: /
+        {{- end }}
+      backendRefs:
+        {{- range .backendRefs }}
+        - name: {{ .name }}
+          port: {{ .port }}
+          weight: {{ .weight | default 1 }}
+        {{- end }}
+      {{- end }}
     {{- else }}
     - backendRefs:
       - group: ""
