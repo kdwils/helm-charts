@@ -18,7 +18,7 @@ binaryData:
 {{- end }}
 {{- end }}
 
-{{- range .Values.configmap.configmaps }}
+{{- range .Values.configmaps }}
 ---
 apiVersion: v1
 kind: ConfigMap
