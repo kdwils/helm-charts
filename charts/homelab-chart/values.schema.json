@@ -177,6 +177,46 @@
                 }
             }
         },
+        "configmaps": {
+            "description": "List of ConfigMaps to create and/or mount",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "binaryData": {
+                        "description": "Optional: Key-value pairs for binary data (base64 encoded)",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "data": {
+                        "description": "Key-value pairs for the ConfigMap data field (string values)",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "mountPath": {
+                        "description": "Optional: Auto-mount this ConfigMap at the specified path in the container",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "The exact name of the ConfigMap resource in Kubernetes",
+                        "type": "string"
+                    },
+                    "readOnly": {
+                        "description": "Optional: Mount as read-only",
+                        "default": false,
+                        "type": "boolean"
+                    },
+                    "subPath": {
+                        "description": "Optional: Sub-path within the volume to mount a specific key",
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "deployment": {
             "description": "Deployment configuration for the application",
             "type": "object",
@@ -611,6 +651,49 @@
                             },
                             "secretName": {
                                 "description": "Name of the TLS secret",
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "postgres": {
+            "description": "PostgreSQL configuration using CloudNativePG",
+            "type": "object",
+            "properties": {
+                "clusters": {
+                    "description": "List of PostgreSQL clusters to create",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "accessModes": {
+                                "description": "Access modes for the PVC",
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "database": {
+                                "description": "Database name to initialize",
+                                "type": "string"
+                            },
+                            "instances": {
+                                "description": "Number of PostgreSQL instances",
+                                "default": 1,
+                                "type": "integer"
+                            },
+                            "name": {
+                                "description": "Name of the PostgreSQL cluster",
+                                "type": "string"
+                            },
+                            "owner": {
+                                "description": "Database owner",
+                                "type": "string"
+                            },
+                            "size": {
+                                "description": "Storage size (e.g., 10Gi, 1Ti)",
                                 "type": "string"
                             }
                         }

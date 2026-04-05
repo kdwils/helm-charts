@@ -1,0 +1,22 @@
+{{- range .Values.postgres.clusters }}
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "homelab-chart.labels" $ | nindent 4 }}
+spec:
+  instances: {{ .instances | default 1 }}
+  storage:
+    size: {{ .size }}
+    pvcTemplate:
+      accessModes:
+      {{- range .accessModes }}
+        - {{ . }}
+      {{- end }}
+  bootstrap:
+    initdb:
+      database: {{ .database }}
+      owner: {{ .owner }}
+{{- end -}}
