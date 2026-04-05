@@ -97,10 +97,19 @@ deployment:
   args: []
   # - echo "Hello World"
 
-  # @schema type:object;additionalProperties:true;description:Environment variables as key-value pairs
+  # @schema type:object;additionalProperties:{"type":["string","object"]};description:Environment variables as key-value pairs. Use string values for plain env vars, or objects with valueFrom for configMap/secret references
   env: {}
-  # - ENV_VAR1: "value1"
-  # - ENV_VAR2: "value2"
+  #   ENV_VAR1: "value1"
+  #   ENV_VAR2:
+  #     valueFrom:
+  #       configMapKeyRef:
+  #         name: my-config
+  #         key: database.host
+  #   DATABASE_PASSWORD:
+  #     valueFrom:
+  #       secretKeyRef:
+  #         name: db-secrets
+  #         key: password
 
   # @schema type:array;description:Environment variable references from ConfigMaps/Secrets
   envFrom: []

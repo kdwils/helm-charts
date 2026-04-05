@@ -149,7 +149,11 @@ Render a container definition. Accepts a dict with:
   env:
     {{- range $key, $value := . }}
     - name: {{ $key }}
+      {{- if kindIs "map" $value }}
+      {{- toYaml $value | nindent 6 }}
+      {{- else }}
       value: {{ $value | quote }}
+      {{- end }}
     {{- end }}
   {{- end }}
   {{- with $container.envFrom }}

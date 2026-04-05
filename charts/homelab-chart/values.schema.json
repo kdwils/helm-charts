@@ -304,9 +304,14 @@
                     ]
                 },
                 "env": {
-                    "description": "Environment variables as key-value pairs",
+                    "description": "Environment variables as key-value pairs. Use string values for plain env vars, or objects with valueFrom for configMap/secret references",
                     "type": "object",
-                    "additionalProperties": true
+                    "additionalProperties": {
+                        "type": [
+                            "string",
+                            "object"
+                        ]
+                    }
                 },
                 "envFrom": {
                     "description": "Environment variable references from ConfigMaps/Secrets",
