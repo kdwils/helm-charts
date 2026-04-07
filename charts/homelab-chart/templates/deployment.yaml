@@ -55,6 +55,12 @@ spec:
       {{- end }}
       {{- end }}
       {{- $allVolumeMounts := concat $pvcVolumeMounts $configMapVolumeMounts }}
+      {{- if .Values.initContainers }}
+      initContainers:
+      {{- range .Values.initContainers }}
+      {{- include "homelab-chart.container" (dict "container" . "root" $ "pvcVolumeMounts" (list)) | nindent 8 }}
+      {{- end }}
+      {{- end }}
       containers:
         {{- if .Values.deployment.containers }}
         {{- range .Values.deployment.containers }}
