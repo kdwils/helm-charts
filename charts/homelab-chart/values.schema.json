@@ -663,6 +663,67 @@
                 }
             }
         },
+        "initContainers": {
+            "description": "List of init containers to run before the main container. Each init container must complete successfully before the next starts. Use for setup tasks such as policy routing, permission fixups, or waiting for sidecars.",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "args": {
+                        "description": "Arguments to the entrypoint",
+                        "type": "array"
+                    },
+                    "command": {
+                        "description": "Entrypoint array (overrides container entrypoint)",
+                        "type": "array"
+                    },
+                    "env": {
+                        "description": "Environment variables",
+                        "type": "object"
+                    },
+                    "envFrom": {
+                        "description": "Environment variables from ConfigMaps/Secrets",
+                        "type": "array"
+                    },
+                    "image": {
+                        "description": "Container image configuration",
+                        "type": "object"
+                    },
+                    "lifecycle": {
+                        "description": "Lifecycle hooks (postStart, preStop)",
+                        "type": "object"
+                    },
+                    "livenessProbe": {
+                        "description": "Liveness probe configuration",
+                        "type": "object"
+                    },
+                    "name": {
+                        "description": "Container name",
+                        "type": "string"
+                    },
+                    "ports": {
+                        "description": "Container ports",
+                        "type": "array"
+                    },
+                    "readinessProbe": {
+                        "description": "Readiness probe configuration",
+                        "type": "object"
+                    },
+                    "resources": {
+                        "description": "Resource limits and requests",
+                        "type": "object"
+                    },
+                    "securityContext": {
+                        "description": "Security context for this container",
+                        "type": "object"
+                    },
+                    "volumeMounts": {
+                        "description": "Volume mounts for this container",
+                        "type": "array"
+                    }
+                }
+            }
+        },
         "postgres": {
             "description": "PostgreSQL configuration using CloudNativePG",
             "type": "object",
