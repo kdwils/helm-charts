@@ -32,3 +32,20 @@ extraContainers:
       - name: http
         containerPort: 8081
         protocol: TCP
+
+initContainers:
+  - name: test-init-container
+    restartPolicy: always
+    image:
+      repository: busybox
+      tag: latest
+      pullPolicy: IfNotPresent
+    command:
+      - /bin/sh
+      - -c
+    args:
+      - echo "Hello World" && sleep 3600
+    ports:
+      - name: http
+        containerPort: 8082
+        protocol: TCP
