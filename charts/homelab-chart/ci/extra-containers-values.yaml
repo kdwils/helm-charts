@@ -35,7 +35,7 @@ extraContainers:
 
 initContainers:
   - name: test-init-container
-    restartPolicy: always
+    restartPolicy: Always
     image:
       repository: busybox
       tag: latest
