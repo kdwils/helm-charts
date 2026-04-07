@@ -203,11 +203,6 @@ initContainers: []
 #     command:
 #       - sh
 #       - -c
-#       - |
-#         until ip link show tailscale0; do sleep 1; done
-#         iptables -t mangle -A OUTPUT -p udp --dport 6881 -j MARK --set-mark 0x1
-#         ip rule add fwmark 0x1 table 200
-#         ip route add default via 100.x.y.z dev tailscale0 table 200
 
 # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Container name"},"image":{"type":"object","description":"Container image configuration"},"command":{"type":"array","description":"Entrypoint array (overrides container entrypoint)"},"args":{"type":"array","description":"Arguments to the entrypoint"},"resources":{"type":"object","description":"Resource limits and requests"},"livenessProbe":{"type":"object","description":"Liveness probe configuration"},"readinessProbe":{"type":"object","description":"Readiness probe configuration"},"lifecycle":{"type":"object","description":"Lifecycle hooks (postStart, preStop)"},"env":{"type":"object","description":"Environment variables"},"envFrom":{"type":"array","description":"Environment variables from ConfigMaps/Secrets"},"volumeMounts":{"type":"array","description":"Volume mounts for this container"},"securityContext":{"type":"object","description":"Security context for this container"},"ports":{"type":"array","description":"Container ports"}};description:List of extra sidecar containers to add to the pod (e.g., gluetun VPN, logging agents, metrics exporters). extraContainers do NOT inherit PVC/ConfigMap mounts.
 extraContainers: []
