@@ -11,7 +11,7 @@ deployment:
         - /bin/sh
         - -c
       args:
-        - echo "Hello World" && sleep 3600
+        - echo "Hello World"
       ports:
         - name: http
           containerPort: 8080
@@ -27,7 +27,7 @@ extraContainers:
       - /bin/sh
       - -c
     args:
-      - echo "Hello World" && sleep 3600
+      - echo "Hello World"
     ports:
       - name: http
         containerPort: 8081
@@ -43,7 +43,7 @@ initContainers:
       - /bin/sh
       - -c
     args:
-      - echo "Hello World" && sleep 3600
+      - echo "Hello World"
     ports:
       - name: http
         containerPort: 8080
