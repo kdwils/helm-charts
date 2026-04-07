@@ -1,0 +1,71 @@
+{{- if .Values.udproute.create -}}
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: UDPRoute
+metadata:
+  name: {{ include "homelab-chart.fullname" . }}
+  labels:
+    {{- include "homelab-chart.labels" . | nindent 4 }}
+  {{- with .Values.udproute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.udproute.parentRefs }}
+  parentRefs:
+    {{- toYaml .Values.udproute.parentRefs | nindent 4 }}
+  {{- end }}
+  {{- if .Values.udproute.hostnames }}
+  hostnames:
+    {{- range .Values.udproute.hostnames }}
+    - {{ . | quote }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- if .Values.udproute.rules -}}
+      {{- toYaml .Values.udproute.rules | nindent 4 }}
+    {{- else }}
+    - backendRefs:
+      - group: ""
+        kind: Service
+        name: {{ include "homelab-chart.fullname" . }}
+        port: {{ .Values.service.port }}
+    {{- end }}
+{{- end }}
+---
+{{- range .Values.udproutes }}
+{{- if not .name }}
+{{- fail "udproutes entry is missing required field: name" }}
+{{- end }}
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: UDPRoute
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "homelab-chart.labels" $ | nindent 4 }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .parentRefs }}
+  parentRefs:
+    {{- toYaml .parentRefs | nindent 4 }}
+  {{- end }}
+  {{- if .hostnames }}
+  hostnames:
+    {{- range .hostnames }}
+    - {{ . | quote }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- if .rules -}}
+      {{- toYaml .rules | nindent 4 }}
+    {{- else }}
+    - backendRefs:
+      - group: ""
+        kind: Service
+        name: {{ include "homelab-chart.fullname" $ }}
+        port: {{ $.Values.service.port }}
+    {{- end }}
+---
+{{- end }}
