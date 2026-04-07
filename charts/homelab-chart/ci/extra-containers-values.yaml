@@ -34,7 +34,7 @@ extraContainers:
         protocol: TCP
 
 initContainers:
-  - name: test-container
+  - name: init-container
     image:
       repository: busybox
       tag: latest
