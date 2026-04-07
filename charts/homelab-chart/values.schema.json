@@ -918,6 +918,11 @@
             "description": "tcproute configuration for Gateway API",
             "type": "object",
             "properties": {
+                "annotations": {
+                    "description": "Annotations to add to the tcproute",
+                    "type": "object",
+                    "additionalProperties": true
+                },
                 "create": {
                     "description": "Specifies whether an tcproute should be created",
                     "default": false,
@@ -1045,6 +1050,83 @@
                     },
                     "name": {
                         "description": "Name of the tlsroute resource (required)",
+                        "type": "string"
+                    },
+                    "parentRefs": {
+                        "description": "Parent references (Gateways)",
+                        "type": "array"
+                    },
+                    "rules": {
+                        "description": "Routing rules",
+                        "type": "array"
+                    }
+                }
+            }
+        },
+        "udproute": {
+            "description": "udproute configuration for Gateway API",
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "description": "Annotations to add to the udproute",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "create": {
+                    "description": "Specifies whether an udproute should be created",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "hostnames": {
+                    "description": "List of hostnames for the udproute",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "parentRefs": {
+                    "description": "Parent references (Gateways) for the udproute",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Name of the Gateway",
+                                "type": "string"
+                            },
+                            "namespace": {
+                                "description": "Namespace of the Gateway",
+                                "type": "string"
+                            },
+                            "sectionName": {
+                                "description": "Section name of the Gateway listener",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "rules": {
+                    "description": "Routing rules for the udproute",
+                    "type": "array"
+                }
+            }
+        },
+        "udproutes": {
+            "description": "List of udproute resources to create",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "annotations": {
+                        "description": "Annotations for the udproute",
+                        "type": "object"
+                    },
+                    "hostnames": {
+                        "description": "List of hostnames",
+                        "type": "array"
+                    },
+                    "name": {
+                        "description": "Name of the udproute resource (required)",
                         "type": "string"
                     },
                     "parentRefs": {

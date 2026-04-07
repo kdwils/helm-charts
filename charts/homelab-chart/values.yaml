@@ -484,18 +484,20 @@ tcproute:
   #   backendRefs:
   #     - name: my-service
   #       port: 80
+  # @schema type:object;additionalProperties:true;description:Annotations to add to the tcproute
+  annotations: {}
 
 # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the tcproute resource (required)"},"annotations":{"type":"object","description":"Annotations for the tcproute"},"parentRefs":{"type":"array","description":"Parent references (Gateways)"},"hostnames":{"type":"array","description":"List of hostnames"},"rules":{"type":"array","description":"Routing rules"}};description:List of tcproute resources to create
 tcproutes: []
-  # - name: nats
-  #   parentRefs:
-  #     - name: homelab
-  #       namespace: envoy-gateway-system
-  #       sectionName: nats
-  #   rules:
-  #     - backendRefs:
-  #         - name: nats
-  #           port: 4222
+# - name: nats
+#   parentRefs:
+#     - name: homelab
+#       namespace: envoy-gateway-system
+#       sectionName: nats
+#   rules:
+#     - backendRefs:
+#         - name: nats
+#           port: 4222
 
 # @schema type:object;description:tlsroute configuration for Gateway API
 tlsroute:
@@ -527,6 +529,37 @@ tlsroutes: []
   #     - backendRefs:
   #         - name: secure-app
   #           port: 8443
+
+# @schema type:object;description:udproute configuration for Gateway API
+udproute:
+  # @schema type:boolean;default:false;description:Specifies whether an udproute should be created
+  create: false
+  # @schema type:object;additionalProperties:true;description:Annotations to add to the udproute
+  annotations: {}
+  # @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the Gateway"},"namespace":{"type":"string","description":"Namespace of the Gateway"},"sectionName":{"type":"string","description":"Section name of the Gateway listener"}};description:Parent references (Gateways) for the udproute
+  parentRefs: []
+  # - name: gateway
+  #   namespace: gateway-system
+  # @schema type:array;item:string;description:List of hostnames for the udproute
+  hostnames: []
+  # - example.com
+  # @schema type:array;description:Routing rules for the udproute
+  rules: []
+  # - backendRefs:
+  #     - name: my-service
+  #       port: 53
+
+# @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"Name of the udproute resource (required)"},"annotations":{"type":"object","description":"Annotations for the udproute"},"parentRefs":{"type":"array","description":"Parent references (Gateways)"},"hostnames":{"type":"array","description":"List of hostnames"},"rules":{"type":"array","description":"Routing rules"}};description:List of udproute resources to create
+udproutes: []
+  # - name: dns
+  #   parentRefs:
+  #     - name: homelab
+  #       namespace: envoy-gateway-system
+  #       sectionName: dns
+  #   rules:
+  #     - backendRefs:
+  #         - name: dns
+  #           port: 53
 
 # @schema type:object;description:PostgreSQL configuration using CloudNativePG
 postgres:
