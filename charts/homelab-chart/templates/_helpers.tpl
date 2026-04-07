@@ -96,6 +96,9 @@ Render a container definition. Accepts a dict with:
 {{- $root := .root -}}
 {{- $pvcVolumeMounts := .pvcVolumeMounts | default list -}}
 - name: {{ $container.name }}
+  {{- with $container.restartPolicy }}
+  restartPolicy: {{ . }}
+  {{- end }}
   {{- if $container.securityContext }}
   securityContext:
     {{- toYaml $container.securityContext | nindent 4 }}
