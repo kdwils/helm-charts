@@ -975,6 +975,60 @@
                 }
             }
         },
+        "serviceMonitor": {
+            "description": "ServiceMonitor configuration for Prometheus Operator",
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "description": "Annotations to add to the ServiceMonitor",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "enabled": {
+                    "description": "Specifies whether a ServiceMonitor should be created",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "endpoints": {
+                    "description": "List of endpoints to scrape",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "interval": {
+                                "description": "Scrape interval",
+                                "type": "string"
+                            },
+                            "path": {
+                                "description": "Metrics path",
+                                "type": "string"
+                            },
+                            "port": {
+                                "description": "Port name or number",
+                                "type": "string"
+                            },
+                            "scrapeTimeout": {
+                                "description": "Scrape timeout",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "labels": {
+                    "description": "Labels to add to the ServiceMonitor",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "namespace": {
+                    "description": "Namespace to create the ServiceMonitor in (defaults to release namespace)",
+                    "type": "string"
+                },
+                "release": {
+                    "description": "Release name for kube-prometheus-stack label (required for ServiceMonitor to be scraped)",
+                    "type": "string"
+                }
+            }
+        },
         "tcproute": {
             "description": "tcproute configuration for Gateway API",
             "type": "object",

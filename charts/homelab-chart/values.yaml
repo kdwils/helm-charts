@@ -262,6 +262,28 @@ service:
   #     targetPort: 9090
   #     protocol: TCP
 
+# @schema type:object;description:ServiceMonitor configuration for Prometheus Operator
+serviceMonitor:
+  # @schema type:boolean;default:false;description:Specifies whether a ServiceMonitor should be created
+  enabled: false
+  # @schema type:string;description:Namespace to create the ServiceMonitor in (defaults to release namespace)
+  namespace: ""
+  # @schema type:string;description:Release name for kube-prometheus-stack label (required for ServiceMonitor to be scraped)
+  release: ""
+  # @schema type:object;additionalProperties:true;description:Labels to add to the ServiceMonitor
+  labels: {}
+  # @schema type:object;additionalProperties:true;description:Annotations to add to the ServiceMonitor
+  annotations: {}
+  # @schema type:array;item:object;itemProperties:{"port":{"type":"string","description":"Port name or number"},"path":{"type":"string","description":"Metrics path"},"interval":{"type":"string","description":"Scrape interval"},"scrapeTimeout":{"type":"string","description":"Scrape timeout"}};description:List of endpoints to scrape
+  endpoints: []
+  # Example:
+  #   release: kube-prometheus-stack
+  #   endpoints:
+  #     - port: metrics
+  #       path: /metrics
+  #       interval: 30s
+  #       scrapeTimeout: 10s
+
 # @schema type:object;description:Ingress configuration to expose the application externally
 ingress:
   # @schema type:boolean;default:false;description:Specifies whether an Ingress should be created
