@@ -1,6 +1,6 @@
 # homelab-chart
 
-![Version: 0.1.24](https://img.shields.io/badge/Version-0.1.24-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.26](https://img.shields.io/badge/Version-0.1.26-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 Helm chart for generic kubernetes deployments
 
@@ -80,6 +80,12 @@ Helm chart for generic kubernetes deployments
 | serviceAccount.automount | bool | `false` |  |
 | serviceAccount.create | bool | `false` |  |
 | serviceAccount.name | string | `""` |  |
+| serviceMonitor.annotations | object | `{}` |  |
+| serviceMonitor.enabled | bool | `false` |  |
+| serviceMonitor.endpoints | list | `[]` |  |
+| serviceMonitor.labels | object | `{}` |  |
+| serviceMonitor.namespace | string | `""` |  |
+| serviceMonitor.release | string | `""` |  |
 | tcproute.annotations | object | `{}` |  |
 | tcproute.create | bool | `false` |  |
 | tcproute.hostnames | list | `[]` |  |
