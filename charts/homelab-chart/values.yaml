@@ -241,6 +241,8 @@ service:
   create: false
   # @schema type:string;enum:[ClusterIP,NodePort,LoadBalancer,ExternalName];default:ClusterIP;description:Kubernetes Service type
   type: ClusterIP
+  # @schema type:string;description:load balancer class
+  loadBalancerClass: ""
   # @schema type:[integer,string];default:0;description:Service port
   port: 0
   # @schema type:[integer,string,null];description:Target port on the container

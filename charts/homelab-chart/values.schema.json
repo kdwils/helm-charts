@@ -869,6 +869,10 @@
                     "default": true,
                     "type": "boolean"
                 },
+                "loadBalancerClass": {
+                    "description": "load balancer class",
+                    "type": "string"
+                },
                 "name": {
                     "description": "Name for the port",
                     "default": "http",

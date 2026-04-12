@@ -7,6 +7,9 @@ metadata:
     {{- include "homelab-chart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
+  {{- with .Values.service.loadBalancerClass }}
+  loadBalancerClass: {{ . }}
+  {{- end }}
   ports:
     {{- if .Values.service.ports }}
     {{- range .Values.service.ports }}
