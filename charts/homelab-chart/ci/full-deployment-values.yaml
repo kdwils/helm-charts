@@ -49,6 +49,10 @@ service:
   targetPort: 8080
   protocol: TCP
   name: http
+  labels:
+    test: label
+  annotations:
+    test: annotation
 
 autoscaling:
   enabled: true
