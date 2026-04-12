@@ -19,4 +19,9 @@ spec:
     initdb:
       database: {{ .database }}
       owner: {{ .owner }}
+  {{- with .services }}
+  services:
+    additional:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
 {{- end -}}
