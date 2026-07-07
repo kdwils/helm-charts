@@ -407,9 +407,9 @@ verticalPodAutoscaler:
     kind: Deployment
     # @schema type:string;description:Name of the target resource (defaults to fullname)
     name: ""
-  # @schema type:object;description:Update policy for the VPA (passed through as-is)
-  updatePolicy: {}
-    # updateMode: "Recreate"
+  # @schema type:object;description:Update policy for the VPA (defaults to updateMode: Initial)
+  updatePolicy:
+    updateMode: Initial
   # @schema type:object;description:Resource policy for the VPA (passed through as-is)
   resourcePolicy: {}
     # containerPolicies:

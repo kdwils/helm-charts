@@ -10,10 +10,8 @@ spec:
     apiVersion: {{ .Values.verticalPodAutoscaler.targetRef.apiVersion | default "apps/v1" }}
     kind: {{ .Values.verticalPodAutoscaler.targetRef.kind | default "Deployment" }}
     name: {{ .Values.verticalPodAutoscaler.targetRef.name | default (include "homelab-chart.fullname" .) }}
-  {{- with .Values.verticalPodAutoscaler.updatePolicy }}
   updatePolicy:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- toYaml .Values.verticalPodAutoscaler.updatePolicy | nindent 4 }}
   {{- with .Values.verticalPodAutoscaler.resourcePolicy }}
   resourcePolicy:
     {{- toYaml . | nindent 4 }}

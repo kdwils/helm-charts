@@ -1293,8 +1293,13 @@
                     }
                 },
                 "updatePolicy": {
-                    "description": "Update policy for the VPA (passed through as-is)",
-                    "type": "object"
+                    "description": "Update policy for the VPA (defaults to updateMode: Initial)",
+                    "type": "object",
+                    "properties": {
+                        "updateMode": {
+                            "type": "string"
+                        }
+                    }
                 }
             }
         }
