@@ -1,0 +1,21 @@
+{{- if .Values.verticalPodAutoscaler.enabled }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ include "homelab-chart.fullname" . }}
+  labels:
+    {{- include "homelab-chart.labels" . | nindent 4 }}
+spec:
+  targetRef:
+    apiVersion: {{ .Values.verticalPodAutoscaler.targetRef.apiVersion | default "apps/v1" }}
+    kind: {{ .Values.verticalPodAutoscaler.targetRef.kind | default "Deployment" }}
+    name: {{ .Values.verticalPodAutoscaler.targetRef.name | default (include "homelab-chart.fullname" .) }}
+  {{- with .Values.verticalPodAutoscaler.updatePolicy }}
+  updatePolicy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.verticalPodAutoscaler.resourcePolicy }}
+  resourcePolicy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
