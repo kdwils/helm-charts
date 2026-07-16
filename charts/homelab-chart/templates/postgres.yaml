@@ -8,6 +8,10 @@ metadata:
     {{- include "homelab-chart.labels" $ | nindent 4 }}
 spec:
   instances: {{ .instances | default 1 }}
+  {{- with .serviceAccountTemplate }}
+  serviceAccountTemplate:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   storage:
     size: {{ .size }}
     pvcTemplate:

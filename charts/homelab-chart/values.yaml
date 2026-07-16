@@ -425,6 +425,25 @@ verticalPodAutoscaler:
     #       - memory
     #     controlledValues: RequestsAndLimits
 
+# @schema type:array;item:object;itemProperties:{"name":{"type":"string","description":"The VPA resource name"},"targetRef":{"type":"object","description":"Target reference for the VPA","properties":{"apiVersion":{"type":"string","default":"apps/v1"},"kind":{"type":"string","default":"Deployment"},"name":{"type":"string","description":"Name of the target resource (defaults to the VPA name)"}}},"updatePolicy":{"type":"object","description":"Update policy for the VPA (defaults to updateMode: Initial)"},"resourcePolicy":{"type":"object","description":"Resource policy for the VPA (passed through as-is)"}};description:List of additional Vertical Pod Autoscalers
+verticalPodAutoscalers: []
+# - name: my-app-vpa
+#   targetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: my-app
+#   updatePolicy:
+#     updateMode: Auto
+#   resourcePolicy:
+#     containerPolicies:
+#       - containerName: "application"
+#         minAllowed:
+#           cpu: 100m
+#           memory: 128Mi
+#         maxAllowed:
+#           cpu: 2
+#           memory: 2Gi
+
 # @schema type:object;description:PersistentVolumeClaim configuration
 pvc:
   # @schema type:boolean;default:false;description:Specifies whether PVCs should be created

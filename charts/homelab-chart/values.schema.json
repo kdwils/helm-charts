@@ -1302,6 +1302,45 @@
                     }
                 }
             }
+        },
+        "verticalPodAutoscalers": {
+            "description": "List of additional Vertical Pod Autoscalers",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The VPA resource name",
+                        "type": "string"
+                    },
+                    "resourcePolicy": {
+                        "description": "Resource policy for the VPA (passed through as-is)",
+                        "type": "object"
+                    },
+                    "targetRef": {
+                        "description": "Target reference for the VPA",
+                        "type": "object",
+                        "properties": {
+                            "apiVersion": {
+                                "default": "apps/v1",
+                                "type": "string"
+                            },
+                            "kind": {
+                                "default": "Deployment",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "Name of the target resource (defaults to the VPA name)",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "updatePolicy": {
+                        "description": "Update policy for the VPA (defaults to updateMode: Initial)",
+                        "type": "object"
+                    }
+                }
+            }
         }
     }
 }
