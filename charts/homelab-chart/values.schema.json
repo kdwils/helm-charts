@@ -217,6 +217,137 @@
                 }
             }
         },
+        "daemonset": {
+            "description": "DaemonSet configuration for the application",
+            "type": "object",
+            "properties": {
+                "affinity": {
+                    "description": "Affinity rules for pod assignment",
+                    "type": "object"
+                },
+                "args": {
+                    "description": "Arguments to the entrypoint (overrides the container's CMD)",
+                    "type": "array"
+                },
+                "command": {
+                    "description": "Entrypoint array (overrides the container's ENTRYPOINT)",
+                    "type": "array"
+                },
+                "containers": {
+                    "description": "List of containers",
+                    "type": "array"
+                },
+                "create": {
+                    "description": "Specifies whether a DaemonSet should be created",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "dnsPolicy": {
+                    "description": "DNS policy for the pod",
+                    "type": "string"
+                },
+                "env": {
+                    "description": "Environment variables as key-value pairs",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": [
+                            "string",
+                            "object"
+                        ]
+                    }
+                },
+                "envFrom": {
+                    "description": "Environment variable references from ConfigMaps/Secrets",
+                    "type": "array"
+                },
+                "fullnameOverride": {
+                    "description": "Override the full resource name",
+                    "type": "string"
+                },
+                "hostIPC": {
+                    "description": "Run the pod with host IPC namespace",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "hostNetwork": {
+                    "description": "Run the pod in the host network namespace",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "hostPID": {
+                    "description": "Run the pod with host PID namespace",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "image": {
+                    "description": "Container image configuration",
+                    "type": "object",
+                    "required": [
+                        "repository",
+                        "tag"
+                    ],
+                    "properties": {
+                        "pullPolicy": {
+                            "description": "Image pull policy",
+                            "default": "IfNotPresent",
+                            "type": "string",
+                            "enum": [
+                                "Always",
+                                "IfNotPresent",
+                                "Never"
+                            ]
+                        },
+                        "repository": {
+                            "description": "Container image repository",
+                            "type": "string"
+                        },
+                        "tag": {
+                            "description": "Container image tag",
+                            "type": "string"
+                        }
+                    }
+                },
+                "nameOverride": {
+                    "description": "Override the chart name",
+                    "type": "string"
+                },
+                "nodeSelector": {
+                    "description": "Node labels for pod assignment",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "podAnnotations": {
+                    "description": "Annotations to add to the pod",
+                    "type": "object"
+                },
+                "podLabels": {
+                    "description": "Labels to add to the pod",
+                    "type": "object"
+                },
+                "podSecurityContext": {
+                    "description": "Security context for the pod",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "securityContext": {
+                    "description": "Security context for the container",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "tolerations": {
+                    "description": "Tolerations for pod assignment",
+                    "type": "array"
+                },
+                "volumeMounts": {
+                    "description": "Additional volumeMounts on the output DaemonSet definition",
+                    "type": "array"
+                },
+                "volumes": {
+                    "description": "Additional volumes on the output DaemonSet definition",
+                    "type": "array"
+                }
+            }
+        },
         "deployment": {
             "description": "Deployment configuration for the application",
             "type": "object",
@@ -303,6 +434,10 @@
                         "RollingUpdate"
                     ]
                 },
+                "dnsPolicy": {
+                    "description": "DNS policy for the pod (e.g., ClusterFirstWithHostNet)",
+                    "type": "string"
+                },
                 "env": {
                     "description": "Environment variables as key-value pairs. Use string values for plain env vars, or objects with valueFrom for configMap/secret references",
                     "type": "object",
@@ -320,6 +455,21 @@
                 "fullnameOverride": {
                     "description": "Override the full resource name",
                     "type": "string"
+                },
+                "hostIPC": {
+                    "description": "Run the pod with host IPC namespace",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "hostNetwork": {
+                    "description": "Run the pod in the host network namespace",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "hostPID": {
+                    "description": "Run the pod with host PID namespace",
+                    "default": false,
+                    "type": "boolean"
                 },
                 "hostname": {
                     "description": "pod hostname",
@@ -527,6 +677,10 @@
                     }
                 }
             }
+        },
+        "extraServices": {
+            "description": "List of additional Services to create (e.g. for Tailscale exposure)",
+            "type": "array"
         },
         "httproute": {
             "description": "HTTPRoute configuration for Gateway API",
@@ -824,6 +978,21 @@
                             }
                         }
                     }
+                }
+            }
+        },
+        "rbac": {
+            "description": "RBAC configuration",
+            "type": "object",
+            "properties": {
+                "create": {
+                    "description": "Specifies whether a ClusterRole and ClusterRoleBinding should be created",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "rules": {
+                    "description": "List of RBAC rules for the ClusterRole",
+                    "type": "array"
                 }
             }
         },

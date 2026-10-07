@@ -1,6 +1,6 @@
 # homelab-chart
 
-![Version: 0.1.31](https://img.shields.io/badge/Version-0.1.31-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 Helm chart for generic kubernetes deployments
 
@@ -25,15 +25,43 @@ Helm chart for generic kubernetes deployments
 | configmap.configmaps | list | `[]` |  |
 | configmap.create | bool | `false` |  |
 | configmaps | list | `[]` |  |
+| daemonset.affinity | object | `{}` |  |
+| daemonset.args | list | `[]` |  |
+| daemonset.command | list | `[]` |  |
+| daemonset.containers | list | `[]` |  |
+| daemonset.create | bool | `false` |  |
+| daemonset.dnsPolicy | string | `""` |  |
+| daemonset.env | object | `{}` |  |
+| daemonset.envFrom | list | `[]` |  |
+| daemonset.fullnameOverride | string | `""` |  |
+| daemonset.hostIPC | bool | `false` |  |
+| daemonset.hostNetwork | bool | `false` |  |
+| daemonset.hostPID | bool | `false` |  |
+| daemonset.image.pullPolicy | string | `"IfNotPresent"` |  |
+| daemonset.image.repository | string | `""` |  |
+| daemonset.image.tag | string | `""` |  |
+| daemonset.nameOverride | string | `""` |  |
+| daemonset.nodeSelector | object | `{}` |  |
+| daemonset.podAnnotations | object | `{}` |  |
+| daemonset.podLabels | object | `{}` |  |
+| daemonset.podSecurityContext | object | `{}` |  |
+| daemonset.securityContext | object | `{}` |  |
+| daemonset.tolerations | list | `[]` |  |
+| daemonset.volumeMounts | list | `[]` |  |
+| daemonset.volumes | list | `[]` |  |
 | deployment.affinity | object | `{}` |  |
 | deployment.args | list | `[]` |  |
 | deployment.command | list | `[]` |  |
 | deployment.containers | list | `[]` |  |
 | deployment.create | bool | `false` |  |
 | deployment.deployStrategy | string | `"RollingUpdate"` |  |
+| deployment.dnsPolicy | string | `""` |  |
 | deployment.env | object | `{}` |  |
 | deployment.envFrom | list | `[]` |  |
 | deployment.fullnameOverride | string | `""` |  |
+| deployment.hostIPC | bool | `false` |  |
+| deployment.hostNetwork | bool | `false` |  |
+| deployment.hostPID | bool | `false` |  |
 | deployment.hostname | string | `""` |  |
 | deployment.image.pullPolicy | string | `"IfNotPresent"` |  |
 | deployment.image.repository | string | `""` |  |
@@ -51,6 +79,7 @@ Helm chart for generic kubernetes deployments
 | deployment.volumeMounts | list | `[]` |  |
 | deployment.volumes | list | `[]` |  |
 | extraContainers | list | `[]` |  |
+| extraServices | list | `[]` |  |
 | httproute.create | bool | `false` |  |
 | httproute.hostnames | list | `[]` |  |
 | httproute.parentRefs | list | `[]` |  |
@@ -67,6 +96,8 @@ Helm chart for generic kubernetes deployments
 | postgres.clusters | list | `[]` |  |
 | pvc.create | bool | `false` |  |
 | pvc.pvcs | list | `[]` |  |
+| rbac.create | bool | `false` |  |
+| rbac.rules | list | `[]` |  |
 | securityPolicies | list | `[]` |  |
 | securityPolicy | object | `{}` |  |
 | service.create | bool | `false` |  |
