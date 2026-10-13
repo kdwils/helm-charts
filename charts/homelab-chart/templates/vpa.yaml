@@ -17,3 +17,23 @@ spec:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 {{- end }}
+{{- range .Values.verticalPodAutoscalers }}
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "homelab-chart.labels" $ | nindent 4 }}
+spec:
+  targetRef:
+    apiVersion: {{ dig "targetRef" "apiVersion" "apps/v1" . }}
+    kind: {{ dig "targetRef" "kind" "Deployment" . }}
+    name: {{ dig "targetRef" "name" .name . }}
+  updatePolicy:
+    {{- toYaml (.updatePolicy | default (dict "updateMode" "Initial")) | nindent 4 }}
+  {{- with .resourcePolicy }}
+  resourcePolicy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
